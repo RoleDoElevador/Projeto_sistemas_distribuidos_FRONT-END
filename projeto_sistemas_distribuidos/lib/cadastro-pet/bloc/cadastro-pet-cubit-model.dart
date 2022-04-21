@@ -1,19 +1,19 @@
 
 
-class LoginModel {
+class CadastroPetModel {
    String? teste;
 
 
-  LoginModel(
+  CadastroPetModel(
       {
         this.teste
       });
 
-  LoginModel patchState({
+  CadastroPetModel patchState({
      String? valorNaConta,
 
   }) {
-    return new LoginModel(
+    return new CadastroPetModel(
       teste:  teste??this.teste
 
     );
