@@ -1,3 +1,5 @@
+
+
 class CadastroPetModel {
    String? teste;
 
@@ -8,7 +10,7 @@ class CadastroPetModel {
       });
 
   CadastroPetModel patchState({
-     String? valorNaConta,
+     String? teste,
 
   }) {
     return new CadastroPetModel(
