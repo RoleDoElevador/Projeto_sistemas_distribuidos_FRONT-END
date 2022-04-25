@@ -36,6 +36,15 @@ class _HomePageState extends State<HomePage> {
             ),
             extendBodyBehindAppBar: false,
             body: _buildBody(),
+            floatingActionButton:       Container(
+          alignment: Alignment.bottomRight,
+          child: FloatingActionButton(
+            backgroundColor: Color.fromRGBO(96, 80, 136, 1),
+            onPressed: () {},
+            child: Icon(Icons.add),
+            elevation: 1,
+          ),
+        ),
           );
         },
       ),
@@ -134,15 +143,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ),
-        Container(
-          alignment: Alignment.bottomRight,
-          child: FloatingActionButton(
-            backgroundColor: Color.fromRGBO(96, 80, 136, 1),
-            onPressed: () {},
-            child: Icon(Icons.add),
-            elevation: 1,
-          ),
-        ),
+  
       ],
     );
   }
