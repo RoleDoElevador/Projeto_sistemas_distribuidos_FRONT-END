@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
@@ -27,12 +26,14 @@ class _HomePageState extends State<HomePage> {
       child: new BlocBuilder<CadastroPetCubit, CadastroPetModel>(
         builder: (context, state) {
           return new Scaffold(
-            drawer: Drawer(),
-            backgroundColor: Colors.white,
+            drawer: Drawer(
+              backgroundColor: Color.fromRGBO(96, 80, 136, 1),
+            ),
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(56),
               child: _buildAppBar(),
             ),
+            extendBodyBehindAppBar: false,
             body: _buildBody(),
           );
         },
@@ -64,109 +65,100 @@ class _HomePageState extends State<HomePage> {
   }
 
   _buildBody() {
+    return Column(
+      children: [
+        _buildBarraPesquisa(),
+        new Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 1.299,
+          padding: EdgeInsets.only(top: 20),
+          child: BlocBuilder<CadastroPetCubit, CadastroPetModel>(
+            builder: (context, state) {
+              return GridView.builder(
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 20,
+                      crossAxisCount: 2,
+                      mainAxisExtent: 260),
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                  itemCount: 6,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.only(bottom: 4),
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(243, 241, 237, 1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  topRight: Radius.circular(12)),
+                              child: Image.asset(
+                                "assets/cachorro.jpg",
+                                height: 140,
+                                width: 175,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Container(
+                                padding: EdgeInsets.only(top: 4),
+                                alignment: Alignment.bottomCenter,
+                                child: Text(
+                                  "Thanos",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                            Divider(),
+                            _retornaDescricaoPetGridview(
+                                Icons.eighteen_mp_outlined, "4 anos"),
+                            _retornaDescricaoPetGridview(
+                                Icons.pets_outlined, 'Vira-lata'),
+                            _retornaDescricaoPetGridview(
+                                Icons.fmd_good_outlined, "São Paulo/SP"),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+            },
+          ),
+        ),
+        Container(
+          alignment: Alignment.bottomRight,
+          child: FloatingActionButton(
+            backgroundColor: Color.fromRGBO(96, 80, 136, 1),
+            onPressed: () {},
+            child: Icon(Icons.add),
+            elevation: 1,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _retornaDescricaoPetGridview(IconData icon, String descricao) {
     return new Container(
-      padding: EdgeInsets.only(top: 20),
-      child: BlocBuilder<CadastroPetCubit, CadastroPetModel>(
-        builder: (context, state) {
-          return GridView.builder(
-              scrollDirection: Axis.vertical,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 20,
-                  crossAxisCount: 2,
-                  mainAxisExtent: 260),
-              padding: EdgeInsets.only(left: 16, right: 16),
-              itemCount: 4,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    padding: EdgeInsets.only(bottom: 4),
-                    decoration: BoxDecoration(
-                      color: const Color.fromRGBO(243, 241, 237, 1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12)),
-                          child: Image.asset(
-                            "assets/cachorro.jpg",
-                            height: 140,
-                            width: 175,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Container(
-                            padding: EdgeInsets.only(top: 4),
-                            alignment: Alignment.bottomCenter,
-                            child: Text(
-                              "Thanos",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
-                        Divider(),
-                        Container(
-                          padding: EdgeInsets.only(left: 8),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.eighteen_mp_outlined,
-                                size: 20,
-                                color: const Color.fromRGBO(96, 80, 136, 1),
-                              ),
-                              Container(
-                                  padding: EdgeInsets.only(left: 8),
-                                  child: Text(
-                                    "4 anos",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 8),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.pets_outlined,
-                                size: 20,
-                                color: const Color.fromRGBO(96, 80, 136, 1),
-                              ),
-                              Container(
-                                  padding: EdgeInsets.only(left: 8),
-                                  child: Text(
-                                    "Vira-lata",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 8),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.fmd_good_outlined,
-                                color: const Color.fromRGBO(96, 80, 136, 1),
-                                size: 20,
-                              ),
-                              Container(
-                                  padding: EdgeInsets.only(left: 8),
-                                  child: Text(
-                                    "São Paulo/SP",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ))
-                            ],
-                          ),
-                        )
-                      ],
-                    ));
-              });
-        },
+      padding: const EdgeInsets.only(left: 8),
+      child: new Row(
+        children: [
+          new Icon(
+            icon,
+            color: const Color.fromRGBO(96, 80, 136, 1),
+            size: 20,
+          ),
+          new Container(
+            padding: const EdgeInsets.only(left: 8),
+            child: new Text(
+              descricao,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -174,9 +166,10 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBarraPesquisa() {
     return Container(
       width: MediaQuery.of(context).size.width / 1.2,
+      height: MediaQuery.of(context).size.height / 20,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(9),
+        border: Border.all(color: Colors.black, width: 1.2),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

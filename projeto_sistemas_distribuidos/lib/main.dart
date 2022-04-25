@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/homePage.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
       ),
-      home: HomePage(),
+      home: CadastroPet(),
     );
   }
 }
