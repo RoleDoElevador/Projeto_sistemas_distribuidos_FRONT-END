@@ -55,10 +55,7 @@ class _HomePageState extends State<HomePage> {
       elevation: 0,
       actions: [
         GestureDetector(
-          onTap: () {
-            //apenas para teste
-            Navigator.pushNamed(context, DetalhePet.ROUTE, arguments: _bloc);
-          },
+          onTap: () {},
           child: new Container(
             padding: const EdgeInsets.only(right: 16),
             child: new Icon(
@@ -92,6 +89,9 @@ class _HomePageState extends State<HomePage> {
                   itemCount: 6,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
+                      onTap: () {
+                         Navigator.pushNamed(context, DetalhePet.ROUTE, arguments: _bloc);
+                      },
                       child: Container(
                         padding: EdgeInsets.only(bottom: 4),
                         decoration: BoxDecoration(

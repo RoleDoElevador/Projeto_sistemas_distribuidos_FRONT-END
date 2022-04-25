@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/chatPet.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/homePage.dart';
 
 import 'cadastro-pet/components/detalhePet.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       routes: {
         DetalhePet.ROUTE: (context) => new DetalhePet(),
+        ChatPet.ROUTE:(context) => new ChatPet()
       },
     );
   }
