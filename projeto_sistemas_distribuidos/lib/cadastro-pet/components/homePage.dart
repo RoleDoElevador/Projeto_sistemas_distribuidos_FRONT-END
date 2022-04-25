@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/detalhePet.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -52,11 +53,17 @@ class _HomePageState extends State<HomePage> {
       centerTitle: true,
       elevation: 0,
       actions: [
-        new Container(
-          padding: const EdgeInsets.only(right: 16),
-          child: new Icon(
-            Icons.inbox,
-            color: const Color.fromRGBO(96, 80, 136, 1),
+        GestureDetector(
+          onTap: () {
+            //apenas para teste
+            Navigator.pushNamed(context, DetalhePet.ROUTE, arguments: _bloc);
+          },
+          child: new Container(
+            padding: const EdgeInsets.only(right: 16),
+            child: new Icon(
+              Icons.inbox,
+              color: const Color.fromRGBO(96, 80, 136, 1),
+            ),
           ),
         )
       ],
@@ -76,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 2,
                   mainAxisExtent: 260),
               padding: EdgeInsets.only(left: 16, right: 16),
-              itemCount: 4,
+              itemCount: 15,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                     padding: EdgeInsets.only(bottom: 4),
