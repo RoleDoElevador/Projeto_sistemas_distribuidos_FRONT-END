@@ -24,8 +24,10 @@ class MyApp extends StatelessWidget {
       ),
       home: HomePage(),
       routes: {
+        HomePage.ROUTE: (context) => new HomePage(),
         DetalhePet.ROUTE: (context) => new DetalhePet(),
-        ChatPet.ROUTE:(context) => new ChatPet()
+        CadastroPet.ROUTE: (context) => new CadastroPet(),
+        ChatPet.ROUTE: (context) => new ChatPet(),
       },
     );
   }

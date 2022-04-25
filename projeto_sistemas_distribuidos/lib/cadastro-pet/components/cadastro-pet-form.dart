@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
 
 class CadastroPet extends StatefulWidget {
-  const CadastroPet({Key? key}) : super(key: key);
+  static String ROUTE = '/cadastroPet';
 
   @override
   _CadastroPetState createState() => _CadastroPetState();
 }
 
 class _CadastroPetState extends State<CadastroPet> {
+  CadastroPetCubit? _bloc;
   TextEditingController controladorNomePet = new TextEditingController();
   TextEditingController controladoridadePet = new TextEditingController();
   TextEditingController controladorRacaPet = new TextEditingController();
@@ -15,89 +19,103 @@ class _CadastroPetState extends State<CadastroPet> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.bottomCenter,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 8, bottom: 24),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Image.asset(
-                        "assets/logo.png",
-                        scale: 1.5,
-                      ),
-                    ),
-                    Text(
-                      'CADASTRE SEU PET',
-                      style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(96, 80, 136, 1)),
-                    ),
-                  ],
+    _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
+
+    return BlocProvider.value(
+      value: _bloc!,
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            leading: GestureDetector(
+              child: Icon(
+                Icons.arrow_back_ios_rounded,
+                color: Color.fromRGBO(96, 80, 136, 1),
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            centerTitle: true,
+            title: new Text(
+              'CADASTRE SEU PET',
+              style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromRGBO(96, 80, 136, 1)),
+            ),
+            backgroundColor: Colors.white,
+          ),
+          body: _buildBody()),
+    );
+  }
+
+  Widget _buildBody() {
+    return SingleChildScrollView(
+      child: new Container(
+        alignment: Alignment.bottomCenter,
+        child: new Column(
+          children: [
+            new Container(
+              padding: const EdgeInsets.only(bottom: 24),
+              child: new Container(
+                padding: const EdgeInsets.only(left: 8),
+                child: new Image.asset(
+                  "assets/logo.png",
+                  scale: 1.5,
                 ),
               ),
-              _retornaCampoForms("NOME", controladorNomePet),
-              _retornaCampoForms("IDADE", controladoridadePet),
-              _retornaCampoForms("RAÇA", controladorRacaPet),
-              _retornaCampoForms("LOCALIZAÇÃO", controladorLocalizacaoPet),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.4,
-                child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(),
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Anexar uma foto",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromRGBO(96, 80, 136, 1),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.camera)
-                      ],
+            ),
+            _retornaCampoForms("NOME", controladorNomePet),
+            _retornaCampoForms("IDADE", controladoridadePet),
+            _retornaCampoForms("RAÇA", controladorRacaPet),
+            _retornaCampoForms("LOCALIZAÇÃO", controladorLocalizacaoPet),
+            _retornaAnexoFoto(),
+            new Container(
+              width: MediaQuery.of(context).size.width / 2,
+              child: new ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(96, 80, 136, 1)),
+                onPressed: () {},
+                child: new Text("CADASTRAR",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     )),
-              )
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  _retornaCampoForms(String nomeCampo, TextEditingController controlador) {
-    return Container(
-      padding: EdgeInsets.only(top: 8, bottom: 8),
+  Widget _retornaCampoForms(
+      String nomeCampo, TextEditingController controlador) {
+    return new Container(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       width: MediaQuery.of(context).size.width / 1.2,
-      child: Column(
+      child: new Column(
         children: [
-          Container(
+          new Container(
             alignment: Alignment.topLeft,
-            child: Text(
+            child: new Text(
               nomeCampo,
               style: TextStyle(
                   fontSize: 20,
-                  color: Color.fromRGBO(96, 80, 136, 1),
+                  color: const Color.fromRGBO(96, 80, 136, 1),
                   fontWeight: FontWeight.bold),
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(left: 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Color.fromRGBO(228, 226, 222, 1),
+          new Container(
+            padding: const EdgeInsets.only(left: 8),
+            decoration: new BoxDecoration(
+              borderRadius: new BorderRadius.circular(12),
+              color: const Color.fromRGBO(228, 226, 222, 1),
             ),
-            child: TextField(
+            child: new TextField(
               controller: controlador,
               cursorColor: Colors.transparent,
-              decoration: InputDecoration(
+              decoration: new InputDecoration(
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
               ),
@@ -106,5 +124,62 @@ class _CadastroPetState extends State<CadastroPet> {
         ],
       ),
     );
+  }
+
+  Widget _retornaAnexoFoto() {
+    return new BlocBuilder<CadastroPetCubit, CadastroPetModel>(
+        builder: (context, state) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height / 6,
+            width: MediaQuery.of(context).size.width / 1.4,
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: new OutlinedButton(
+              style: OutlinedButton.styleFrom(),
+              onPressed: () {
+                _bloc!.abrirGaleria();
+              },
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  new Text(
+                    "ANEXE UMA FOTO",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: const Color.fromRGBO(96, 80, 136, 1),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  new Container(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: new Icon(
+                      Icons.add_a_photo_outlined,
+                      size: 48,
+                      color: const Color.fromRGBO(96, 80, 136, 1),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          state.fotoCadastroPet!.path != ''
+              ? Image.file(state.fotoCadastroPet!, scale: 10)
+              : Container(),
+          // Container(
+          //   height: 50,
+          //   child: ListView.builder(
+          //       scrollDirection: Axis.horizontal,
+          //       itemBuilder: (BuildContext context, int index){
+          //
+          //         if (state.fotoCadastroPet.)
+          //     return Container(
+          //       child: Image.file(state.fotoCadastroPet!),
+          //     );
+          //   }),
+          // )
+        ],
+      );
+    });
   }
 }
