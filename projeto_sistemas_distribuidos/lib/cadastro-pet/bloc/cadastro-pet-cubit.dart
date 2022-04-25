@@ -10,5 +10,11 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
           teste: '',
         ));
 
-  String teste = 'RS 1800,00';
+
+  String teste = 'THANOS';
+
+
+
+
+
 }

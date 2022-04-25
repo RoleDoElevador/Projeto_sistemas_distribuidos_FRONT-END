@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/detalhePet.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -53,11 +54,17 @@ class _HomePageState extends State<HomePage> {
       centerTitle: true,
       elevation: 0,
       actions: [
-        new Container(
-          padding: const EdgeInsets.only(right: 16),
-          child: new Icon(
-            Icons.inbox,
-            color: const Color.fromRGBO(96, 80, 136, 1),
+        GestureDetector(
+          onTap: () {
+            //apenas para teste
+            Navigator.pushNamed(context, DetalhePet.ROUTE, arguments: _bloc);
+          },
+          child: new Container(
+            padding: const EdgeInsets.only(right: 16),
+            child: new Icon(
+              Icons.inbox,
+              color: const Color.fromRGBO(96, 80, 136, 1),
+            ),
           ),
         )
       ],
@@ -110,8 +117,7 @@ class _HomePageState extends State<HomePage> {
                                 alignment: Alignment.bottomCenter,
                                 child: Text(
                                   "Thanos",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                             Divider(),
                             _retornaDescricaoPetGridview(
@@ -143,24 +149,23 @@ class _HomePageState extends State<HomePage> {
 
   Widget _retornaDescricaoPetGridview(IconData icon, String descricao) {
     return new Container(
-      padding: const EdgeInsets.only(left: 8),
-      child: new Row(
-        children: [
-          new Icon(
-            icon,
-            color: const Color.fromRGBO(96, 80, 136, 1),
-            size: 20,
-          ),
-          new Container(
-            padding: const EdgeInsets.only(left: 8),
-            child: new Text(
-              descricao,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+        padding: EdgeInsets.only(left: 8),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: const Color.fromRGBO(96, 80, 136, 1),
+              size: 20,
             ),
-          )
-        ],
-      ),
-    );
+            Container(
+              padding: EdgeInsets.only(left: 8),
+              child: Text(
+                descricao,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ));
   }
 
   Widget _buildBarraPesquisa() {

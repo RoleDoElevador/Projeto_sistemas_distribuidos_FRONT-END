@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/homePage.dart';
 
+import 'cadastro-pet/components/detalhePet.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -16,8 +18,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        primarySwatch: Colors.blue,
+        primaryColor: Color(0xFF605088),
       ),
-      home: CadastroPet(),
+      home: HomePage(),
+      routes: {
+        DetalhePet.ROUTE: (context) => new DetalhePet(),
+      },
     );
   }
 }

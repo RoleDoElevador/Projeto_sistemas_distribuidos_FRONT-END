@@ -10,7 +10,7 @@ class CadastroPetModel {
       });
 
   CadastroPetModel patchState({
-     String? valorNaConta,
+     String? teste,
 
   }) {
     return new CadastroPetModel(
