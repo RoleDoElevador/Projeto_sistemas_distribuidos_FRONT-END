@@ -37,6 +37,17 @@ class _HomePageState extends State<HomePage> {
             ),
             extendBodyBehindAppBar: false,
             body: _buildBody(),
+            floatingActionButton: Container(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                backgroundColor: Color.fromRGBO(96, 80, 136, 1),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CadastroPet.ROUTE, arguments: _bloc);
+                },
+                child: Icon(Icons.add),
+                elevation: 1,
+              ),
+            ),
           );
         },
       ),
@@ -75,7 +86,7 @@ class _HomePageState extends State<HomePage> {
         _buildBarraPesquisa(),
         new Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 1.299,
+          height: MediaQuery.of(context).size.height / 1.2,
           padding: EdgeInsets.only(top: 20),
           child: BlocBuilder<CadastroPetCubit, CadastroPetModel>(
             builder: (context, state) {
@@ -91,7 +102,8 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
-                         Navigator.pushNamed(context, DetalhePet.ROUTE, arguments: _bloc);
+                        Navigator.pushNamed(context, DetalhePet.ROUTE,
+                            arguments: _bloc);
                       },
                       child: Container(
                         padding: EdgeInsets.only(bottom: 4),
@@ -133,17 +145,6 @@ class _HomePageState extends State<HomePage> {
                     );
                   });
             },
-          ),
-        ),
-        Container(
-          alignment: Alignment.bottomRight,
-          child: FloatingActionButton(
-            backgroundColor: Color.fromRGBO(96, 80, 136, 1),
-            onPressed: () {
-              Navigator.of(context).pushNamed(CadastroPet.ROUTE, arguments: _bloc);
-            },
-            child: Icon(Icons.add),
-            elevation: 1,
           ),
         ),
       ],
