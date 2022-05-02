@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/detalhePet.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +41,9 @@ class _HomePageState extends State<HomePage> {
           alignment: Alignment.bottomRight,
           child: FloatingActionButton(
             backgroundColor: Color.fromRGBO(96, 80, 136, 1),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context,CadastroPet.ROUTE, arguments: _bloc);
+            },
             child: Icon(Icons.add),
             elevation: 1,
           ),
