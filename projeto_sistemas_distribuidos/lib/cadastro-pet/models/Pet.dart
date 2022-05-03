@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 class Pet {
   String? nome;
-  List<String>? raca;
+  String? raca;
   String? localizacao;
   Uint8List? imagem;
 
@@ -11,10 +11,7 @@ class Pet {
   static Pet fromJson(Map<String, dynamic> json) {
     return new Pet(
         nome: json['nome'],
-        raca: (json['raca'] != null)
-            ? (json['raca'] as List).map((e) => Pet.fromJson(e)).toList().cast() // nao sei se isso aqui vai funcionar
-            : [],
-   
+        raca: json['raca'],
         localizacao: json['localizacao'],
         imagem: json['imagem']);
   }
