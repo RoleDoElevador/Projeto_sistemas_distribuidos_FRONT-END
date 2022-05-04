@@ -77,9 +77,9 @@ class _LoginPageState extends State<LoginPage> {
                 style: ElevatedButton.styleFrom(
                     primary: Color.fromRGBO(96, 80, 136, 1)),
                 onPressed: () async {
-                //  Navigator.of(context).pushReplacementNamed(HomePage.ROUTE);
-           
-              await    service.retonarListaDePets();
+                  Navigator.of(context).pushReplacementNamed(HomePage.ROUTE);
+
+                  await service.retonarListaDePets();
                 },
                 child: new Text(
                   "ENTRAR",

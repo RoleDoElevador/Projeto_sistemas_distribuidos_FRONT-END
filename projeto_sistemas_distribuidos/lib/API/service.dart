@@ -14,6 +14,7 @@ class Service {
       listaPets = lista!.map((i) => Pet.fromJson(i)).toList();  
       return listaPets;
     } catch (e) {
+      print(e);
       return [];
     }
   }
@@ -28,6 +29,7 @@ class Service {
 
       return request.statusCode >= 200 && request.statusCode <= 300;
     } catch (e) {
+      print(e);
       return false;
     }
   }
@@ -43,6 +45,7 @@ class Service {
 
       return request.statusCode >= 200 && request.statusCode <= 300;
     } catch (e) {
+      print(e);
       return false;
     }
   }

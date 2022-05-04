@@ -36,7 +36,7 @@ class _DetalhePetState extends State<DetalhePet> {
                 ),
               ),
               title: Text(
-                '${_bloc?.teste}',
+                'oe',
                 style: TextStyle(color: Colors.black),
               ),
               centerTitle: true,
