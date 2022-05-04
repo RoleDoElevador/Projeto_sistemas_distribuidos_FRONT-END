@@ -24,7 +24,7 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
   Uint8List imagemPet = Uint8List(0);
 
 
-  void inicializarListaPokemons(Service service) async {
+  void inicializarListaPets(Service service) async {
     service.retonarListaDePets().then(
           (pets) => emit(
         state.patchState(

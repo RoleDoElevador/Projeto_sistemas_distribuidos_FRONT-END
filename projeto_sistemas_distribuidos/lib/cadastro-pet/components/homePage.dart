@@ -7,7 +7,6 @@ import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-p
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/detalhePet.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -31,7 +30,7 @@ class _HomePageState extends State<HomePage> {
       },
       child: new BlocBuilder<CadastroPetCubit, CadastroPetModel>(
         builder: (context, state) {
-          _bloc!.inicializarListaPokemons(service);
+          _bloc!.inicializarListaPets(service);
 
           return new Scaffold(
             appBar: PreferredSize(
@@ -78,7 +77,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildGridViewPets(List<Pet>? listaPets){
+  Widget _buildGridViewPets(List<Pet>? listaPets) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -87,7 +86,7 @@ class _HomePageState extends State<HomePage> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 1.2,
               padding: EdgeInsets.only(top: 20, bottom: 8),
-              child:GridView.builder(
+              child: GridView.builder(
                   scrollDirection: Axis.vertical,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisSpacing: 15,
@@ -127,22 +126,22 @@ class _HomePageState extends State<HomePage> {
                                 alignment: Alignment.bottomCenter,
                                 child: Text(
                                   "${listaPets[index].nome}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                             Divider(),
                             _retornaDescricaoPetGridview(
-                                Icons.eighteen_mp_outlined, "${listaPets[index].idade}"),
+                                Icons.eighteen_mp_outlined,
+                                "${listaPets[index].idade}"),
+                            _retornaDescricaoPetGridview(Icons.pets_outlined,
+                                "${listaPets[index].raca}"),
                             _retornaDescricaoPetGridview(
-                                Icons.pets_outlined, "${listaPets[index].raca}"),
-                            _retornaDescricaoPetGridview(
-                                Icons.fmd_good_outlined, "${listaPets[index].localizacao}"),
+                                Icons.fmd_good_outlined,
+                                "${listaPets[index].localizacao}"),
                           ],
                         ),
                       ),
                     );
-                  })
-          ),
+                  })),
         ],
       ),
     );
@@ -234,7 +233,30 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Color.fromRGBO(96, 80, 136, 1),
       child: ListView(
         children: [
+          DrawerHeader(
+            child: Center(
+              child: Column(
+                children: [
+                  new Image.asset(
+                    "assets/logo.png",
+                    scale: 1.8,
+                  ),
+                  new  Text(
+                    'OLX DE DOGUINHO',
+                    style: new TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Divider(color: Color.fromRGBO(243, 241, 237, 1)),
           ListTile(
+            leading: Icon(
+              Icons.pets_outlined,
+              color: Colors.white,
+            ),
             title: GestureDetector(
               child: Text(
                 "Cadastre seu PET",
@@ -245,6 +267,10 @@ class _HomePageState extends State<HomePage> {
           ),
           Divider(color: Color.fromRGBO(243, 241, 237, 1)),
           ListTile(
+            leading: Icon(
+              Icons.info_outlined,
+              color: Colors.white,
+            ),
             title: GestureDetector(
               child: Text("Sobre Nós",
                   style: TextStyle(color: Color.fromRGBO(243, 241, 237, 1))),
@@ -253,6 +279,10 @@ class _HomePageState extends State<HomePage> {
           ),
           Divider(color: Color.fromRGBO(243, 241, 237, 1)),
           ListTile(
+            leading: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
             title: GestureDetector(
               child: Text("Configurações",
                   style: TextStyle(color: Color.fromRGBO(243, 241, 237, 1))),

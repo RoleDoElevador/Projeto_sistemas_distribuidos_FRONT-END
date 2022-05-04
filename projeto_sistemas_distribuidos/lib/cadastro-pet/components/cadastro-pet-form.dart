@@ -70,10 +70,10 @@ class _CadastroPetState extends State<CadastroPet> {
                 ),
               ),
             ),
-            _retornaCampoForms("NOME", controladorNomePet),
-            _retornaCampoForms("IDADE", controladoridadePet),
-            _retornaCampoForms("RAÇA", controladorRacaPet),
-            _retornaCampoForms("LOCALIZAÇÃO", controladorLocalizacaoPet),
+            _retornaCampoForms("NOME", controladorNomePet, TextInputType.text),
+            _retornaCampoForms("IDADE", controladoridadePet, TextInputType.number),
+            _retornaCampoForms("RAÇA", controladorRacaPet, TextInputType.text),
+            _retornaCampoForms("LOCALIZAÇÃO", controladorLocalizacaoPet, TextInputType.text),
             _retornaAnexoFoto(),
             new Container(
               width: MediaQuery.of(context).size.width / 2,
@@ -111,7 +111,7 @@ class _CadastroPetState extends State<CadastroPet> {
   }
 
   Widget _retornaCampoForms(
-      String nomeCampo, TextEditingController controlador) {
+      String nomeCampo, TextEditingController controlador, TextInputType tipoTeclado) {
     return new Container(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       width: MediaQuery.of(context).size.width / 1.2,
@@ -140,6 +140,7 @@ class _CadastroPetState extends State<CadastroPet> {
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
               ),
+              keyboardType: tipoTeclado,
             ),
           ),
         ],
