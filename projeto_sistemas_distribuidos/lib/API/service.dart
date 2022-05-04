@@ -4,18 +4,23 @@ import 'package:http/http.dart' as http;
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 
 class Service {
-  String url = 'http://10.0.2.2:8080/pet/';
+  String url = 'https://aw-pets-api.herokuapp.com/pet/';
 
-  Future<List<Pet>> retonarListaDePets() async {
+  Future<List<Pet>?> retonarListaDePets() async {
     try {
       List<Pet>? listaPets;
-      var request = await http.get(Uri.parse(url));
+      var request = await http.get(
+        Uri.parse(url),
+        headers: {
+          "content-type": "application/json",
+        },
+      );
       List<dynamic>? lista = jsonDecode(request.body);
-      listaPets = lista!.map((i) => Pet.fromJson(i)).toList();  
+      listaPets = lista!.map((i) => Pet.fromJson(i)).toList();
       return listaPets;
     } catch (e) {
       print(e);
-      return [];
+      return null;
     }
   }
 
@@ -27,7 +32,7 @@ class Service {
           },
           body: json.encode(pet.toMap()));
 
-      return request.statusCode >= 200 && request.statusCode <= 300;
+      return request.statusCode >= 200 && request.statusCode < 300;
     } catch (e) {
       print(e);
       return false;
@@ -43,7 +48,7 @@ class Service {
         },
       );
 
-      return request.statusCode >= 200 && request.statusCode <= 300;
+      return request.statusCode >= 200 && request.statusCode < 300;
     } catch (e) {
       print(e);
       return false;
@@ -58,7 +63,7 @@ class Service {
           },
           body: json.encode(pet.toMap()));
 
-      return request.statusCode >= 200 && request.statusCode <= 300;
+      return request.statusCode >= 200 && request.statusCode < 300;
     } catch (e) {
       return false;
     }
