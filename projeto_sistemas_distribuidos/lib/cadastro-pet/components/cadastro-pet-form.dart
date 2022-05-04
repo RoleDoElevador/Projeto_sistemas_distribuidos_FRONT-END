@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 
 class CadastroPet extends StatefulWidget {
   static String ROUTE = '/cadastroPet';
@@ -16,6 +19,8 @@ class _CadastroPetState extends State<CadastroPet> {
   TextEditingController controladoridadePet = new TextEditingController();
   TextEditingController controladorRacaPet = new TextEditingController();
   TextEditingController controladorLocalizacaoPet = new TextEditingController();
+
+  Pet pet = new Pet();
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +80,23 @@ class _CadastroPetState extends State<CadastroPet> {
               child: new ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Color.fromRGBO(96, 80, 136, 1)),
-                onPressed: () {},
+                onPressed: () async {
+
+                  _bloc!.nomePet = controladorNomePet.text;
+                  _bloc!.idadePet = int.parse(controladoridadePet.text);
+                  _bloc!.racaPet = controladorRacaPet.text;
+                  _bloc!.localizacaoPet = controladorLocalizacaoPet.text;
+
+                  pet.nome = _bloc!.nomePet;
+                  pet.idade = _bloc!.idadePet;
+                  pet.raca = _bloc!.racaPet;
+                  pet.localizacao = _bloc!.localizacaoPet;
+
+
+                  pet.imagem = await _bloc!.tratarImagemPet(_bloc!.state.fotoCadastroPet!);
+
+                  _bloc?.salvarCadastroPet(context, pet);
+                },
                 child: new Text("CADASTRAR",
                     style: const TextStyle(
                       fontSize: 16,
@@ -166,18 +187,6 @@ class _CadastroPetState extends State<CadastroPet> {
           state.fotoCadastroPet!.path != ''
               ? Image.file(state.fotoCadastroPet!, scale: 10)
               : Container(),
-          // Container(
-          //   height: 50,
-          //   child: ListView.builder(
-          //       scrollDirection: Axis.horizontal,
-          //       itemBuilder: (BuildContext context, int index){
-          //
-          //         if (state.fotoCadastroPet.)
-          //     return Container(
-          //       child: Image.file(state.fotoCadastroPet!),
-          //     );
-          //   }),
-          // )
         ],
       );
     });

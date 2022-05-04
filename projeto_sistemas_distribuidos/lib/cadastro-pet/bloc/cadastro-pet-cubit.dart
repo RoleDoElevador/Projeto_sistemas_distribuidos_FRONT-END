@@ -1,8 +1,10 @@
 import 'dart:io';
-
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:projeto_sistemas_distribuidos/API/service.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 import 'cadastro-pet-cubit-action.dart';
 import 'cadastro-pet-cubit-model.dart';
 
@@ -10,11 +12,39 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
     implements CadastroPetCubitAction {
   CadastroPetCubit()
       : super(new CadastroPetModel(
-          teste: '',
           fotoCadastroPet: File(''),
+          listaPets: [],
         ));
 
-  String teste = 'THANOS';
+  String? nomePet = '';
+  int idadePet = 0;
+  String? racaPet = '';
+  String? localizacaoPet = '';
+  Service service = new Service();
+  Uint8List imagemPet = Uint8List(0);
+
+
+  void inicializarListaPokemons(Service service) async {
+    service.retonarListaDePets().then(
+          (pets) => emit(
+        state.patchState(
+             listaPets: pets),
+      ),
+    );
+  }
+
+
+  void salvarCadastroPet( BuildContext context, Pet pet) {
+    service.cadastroPet(pet);
+  }
+
+  Future tratarImagemPet(File imagem) async {
+    imagemPet = await imagem.readAsBytes();
+
+    String imagemTratada = imagemPet.toString();
+
+    return imagemTratada;
+  }
 
   Future abrirGaleria() async {
     try {

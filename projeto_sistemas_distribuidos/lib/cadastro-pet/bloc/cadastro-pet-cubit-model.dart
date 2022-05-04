@@ -1,24 +1,26 @@
 import 'dart:io';
 
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
+
 class CadastroPetModel {
-   String? teste;
    File? fotoCadastroPet;
+   List<Pet>? listaPets;
 
 
    CadastroPetModel(
       {
-        this.teste,
         this.fotoCadastroPet,
+        this.listaPets,
       });
 
   CadastroPetModel patchState({
-     String? teste,
     File? fotoCadastroPet,
+    List<Pet>? listaPets,
 
   }) {
     return new CadastroPetModel(
-      teste:  teste??this.teste,
         fotoCadastroPet: fotoCadastroPet??this.fotoCadastroPet,
+      listaPets: listaPets??this.listaPets,
     );
   }
 }
