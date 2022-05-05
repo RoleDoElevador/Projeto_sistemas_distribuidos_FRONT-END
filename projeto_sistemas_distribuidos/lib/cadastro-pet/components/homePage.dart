@@ -5,8 +5,8 @@ import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cub
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/detalhePet.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,11 +27,11 @@ class _HomePageState extends State<HomePage> {
     return new BlocProvider(
       create: (BuildContext context) {
         _bloc = CadastroPetCubit();
+        _bloc!.inicializarListaPets();
         return _bloc!;
       },
       child: new BlocBuilder<CadastroPetCubit, CadastroPetModel>(
         builder: (context, state) {
-          _bloc!.inicializarListaPokemons(service);
 
           return new Scaffold(
             appBar: PreferredSize(
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildGridViewPets(List<Pet>? listaPets){
+  Widget _buildGridViewPets(List<PetRetonoAPI>? listaPets) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 1.2,
               padding: EdgeInsets.only(top: 20, bottom: 8),
-              child:GridView.builder(
+              child: GridView.builder(
                   scrollDirection: Axis.vertical,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisSpacing: 15,
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                       crossAxisCount: 2,
                       mainAxisExtent: 260),
                   padding: EdgeInsets.only(left: 16, right: 16),
-                  itemCount: 6,
+                  itemCount: listaPets?.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
@@ -115,34 +115,36 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12)),
-                              child: Image.network(
-                                "${listaPets![index].imagem}",
-                                height: 140,
-                                width: 175,
-                                fit: BoxFit.cover,
-                              ),
+                              child: listaPets![index].imagem != null
+                                  ? Image.memory(
+                                      listaPets[index].imagem!,
+                                      height: 140,
+                                      width: 175,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Container(),
                             ),
                             Container(
                                 padding: EdgeInsets.only(top: 4),
                                 alignment: Alignment.bottomCenter,
                                 child: Text(
                                   "${listaPets[index].nome}",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                             Divider(),
                             _retornaDescricaoPetGridview(
-                                Icons.eighteen_mp_outlined, "${listaPets[index].idade}"),
+                                Icons.eighteen_mp_outlined,
+                                "${listaPets[index].idade}"),
+                            _retornaDescricaoPetGridview(Icons.pets_outlined,
+                                "${listaPets[index].raca}"),
                             _retornaDescricaoPetGridview(
-                                Icons.pets_outlined, "${listaPets[index].raca}"),
-                            _retornaDescricaoPetGridview(
-                                Icons.fmd_good_outlined, "${listaPets[index].localizacao}"),
+                                Icons.fmd_good_outlined,
+                                "${listaPets[index].localizacao}"),
                           ],
                         ),
                       ),
                     );
-                  })
-          ),
+                  })),
         ],
       ),
     );
@@ -216,7 +218,9 @@ class _HomePageState extends State<HomePage> {
       elevation: 0,
       actions: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+           
+          },
           child: new Container(
             padding: const EdgeInsets.only(right: 16),
             child: new Icon(
