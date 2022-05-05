@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 
 class Service {
-  String url = 'https://aw-pets-api.herokuapp.com/pet/';
+  String url = 'https://api-pets-prod.herokuapp.com/pet/';
 
   Future<List<Pet>?> retonarListaDePets() async {
     try {

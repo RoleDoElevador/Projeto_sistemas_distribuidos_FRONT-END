@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
@@ -20,8 +21,10 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
   int idadePet = 0;
   String? racaPet = '';
   String? localizacaoPet = '';
+  String? historiaPet = '';
   Service service = new Service();
   Uint8List imagemPet = Uint8List(0);
+  Pet petSelecionado = Pet();
 
 
   void inicializarListaPets(Service service) async {
@@ -34,14 +37,16 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
   }
 
 
-  void salvarCadastroPet( BuildContext context, Pet pet) {
-    service.cadastroPet(pet);
+  void salvarCadastroPet(BuildContext context, Pet pet) {
+
+    if(pet != null){
+    service.cadastroPet(pet);}
   }
 
   Future tratarImagemPet(File imagem) async {
     imagemPet = await imagem.readAsBytes();
 
-    String imagemTratada = imagemPet.toString();
+    String imagemTratada = await base64Encode(imagemPet);
 
     return imagemTratada;
   }

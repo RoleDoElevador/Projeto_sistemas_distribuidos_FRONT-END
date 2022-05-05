@@ -1,1 +1,4 @@
-abstract class LoginCubitAction {}
+abstract class LoginCubitAction {
+  void inicializarListaUsuarios() {}
+
+}

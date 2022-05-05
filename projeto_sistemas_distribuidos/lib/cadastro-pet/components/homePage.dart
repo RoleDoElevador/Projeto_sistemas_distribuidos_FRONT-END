@@ -94,10 +94,13 @@ class _HomePageState extends State<HomePage> {
                       crossAxisCount: 2,
                       mainAxisExtent: 260),
                   padding: EdgeInsets.only(left: 16, right: 16),
-                  itemCount: 6,
+                  itemCount: listaPets?.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
+
+                        _bloc!.petSelecionado = listaPets![index];
+
                         Navigator.pushNamed(context, DetalhePet.ROUTE,
                             arguments: _bloc);
                       },
@@ -114,18 +117,18 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12)),
-                              child: Image.network(
-                                "${listaPets![index].imagem}",
-                                height: 140,
-                                width: 175,
-                                fit: BoxFit.cover,
-                              ),
+                               //Image.network(
+                              //   "${listaPets![index].imagem}",
+                              //   height: 140,
+                              //   width: 175,
+                              //   fit: BoxFit.cover,
+                              // ),
                             ),
                             Container(
                                 padding: EdgeInsets.only(top: 4),
                                 alignment: Alignment.bottomCenter,
                                 child: Text(
-                                  "${listaPets[index].nome}",
+                                  "${listaPets![index].nome}",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                             Divider(),
@@ -258,6 +261,9 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
             ),
             title: GestureDetector(
+              onTap: (){
+                Navigator.of(context).pushNamed(CadastroPet.ROUTE, arguments: _bloc!);
+              },
               child: Text(
                 "Cadastre seu PET",
                 style: TextStyle(color: Color.fromRGBO(243, 241, 237, 1)),
