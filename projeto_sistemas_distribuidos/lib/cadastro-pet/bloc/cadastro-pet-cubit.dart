@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
@@ -22,27 +23,23 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
   String? localizacaoPet = '';
   Service service = new Service();
   Uint8List imagemPet = Uint8List(0);
+  String? imagemPetBase64;
 
-
-  void inicializarListaPokemons(Service service) async {
+  void inicializarListaPets() async {
     service.retonarListaDePets().then(
           (pets) => emit(
-        state.patchState(
-             listaPets: pets),
-      ),
-    );
+            state.patchState(listaPets: pets),
+          ),
+        );
   }
 
-
-  void salvarCadastroPet( BuildContext context, Pet pet) {
+  void salvarCadastroPet(BuildContext context, Pet pet) {
     service.cadastroPet(pet);
   }
 
   Future tratarImagemPet(File imagem) async {
     imagemPet = await imagem.readAsBytes();
-
     String imagemTratada = imagemPet.toString();
-
     return imagemTratada;
   }
 
@@ -52,10 +49,18 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
           await ImagePicker().pickImage(source: ImageSource.gallery);
 
       final imageTemp = File(pickedFile!.path);
+      Uint8List imagemGaleria = await imageTemp.readAsBytes();
+      String _imagemBase64 = base64Encode(imagemGaleria);
+      imagemPetBase64 = _imagemBase64;
 
       emit(state.patchState(fotoCadastroPet: imageTemp));
     } catch (e) {
       print('deu ruim: $e');
     }
   }
+
+
+ 
+
+
 }

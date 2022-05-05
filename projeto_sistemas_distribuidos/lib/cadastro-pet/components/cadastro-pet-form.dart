@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
@@ -81,21 +79,22 @@ class _CadastroPetState extends State<CadastroPet> {
                 style: ElevatedButton.styleFrom(
                     primary: Color.fromRGBO(96, 80, 136, 1)),
                 onPressed: () async {
-
                   _bloc!.nomePet = controladorNomePet.text;
                   _bloc!.idadePet = int.parse(controladoridadePet.text);
                   _bloc!.racaPet = controladorRacaPet.text;
                   _bloc!.localizacaoPet = controladorLocalizacaoPet.text;
+                  if (pet.imagem != null && pet.imagem!.isNotEmpty) {
+                    _bloc!.tratarImagemPet(_bloc!.state.fotoCadastroPet!);
+                  }
 
                   pet.nome = _bloc!.nomePet;
                   pet.idade = _bloc!.idadePet;
                   pet.raca = _bloc!.racaPet;
                   pet.localizacao = _bloc!.localizacaoPet;
-
-
-                  pet.imagem = await _bloc!.tratarImagemPet(_bloc!.state.fotoCadastroPet!);
+                  pet.imagem = _bloc!.imagemPetBase64;
 
                   _bloc?.salvarCadastroPet(context, pet);
+                  _bloc?.inicializarListaPets();
                 },
                 child: new Text("CADASTRAR",
                     style: const TextStyle(
