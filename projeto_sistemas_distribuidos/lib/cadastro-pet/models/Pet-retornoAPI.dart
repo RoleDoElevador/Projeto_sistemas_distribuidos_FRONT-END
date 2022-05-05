@@ -1,21 +1,24 @@
 
 
-class Pet {
+import 'dart:convert';
+import 'dart:typed_data';
+
+class PetRetonoAPI {
   String? nome;
   String? raca;
   String? localizacao;
-  String? imagem;
+  Uint8List? imagem;
   int? idade;
   int? codigo;
 
-  Pet({this.nome, this.raca, this.localizacao, this.imagem, this.idade,this.codigo});
+  PetRetonoAPI({this.nome, this.raca, this.localizacao, this.imagem, this.idade,this.codigo});
 
-  static Pet fromJson(Map<String, dynamic> json) {
-    return new Pet(
+  static PetRetonoAPI fromJson(Map<String, dynamic> json) {
+    return new PetRetonoAPI(
       nome: json['nome'],
       raca: json['raca'],
       localizacao: json['localizacao'],
-      imagem: json['imagem'],
+      imagem: base64.decode(json['imagem']),
       idade: json['idade'],
       codigo: json['codigo']
     );
