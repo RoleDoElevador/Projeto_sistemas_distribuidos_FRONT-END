@@ -5,6 +5,7 @@ import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cub
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/detalhePet.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,12 +27,11 @@ class _HomePageState extends State<HomePage> {
     return new BlocProvider(
       create: (BuildContext context) {
         _bloc = CadastroPetCubit();
+        _bloc!.inicializarListaPets();
         return _bloc!;
       },
       child: new BlocBuilder<CadastroPetCubit, CadastroPetModel>(
         builder: (context, state) {
-          _bloc!.inicializarListaPets(service);
-
           return new Scaffold(
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(50),
@@ -77,7 +77,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildGridViewPets(List<Pet>? listaPets) {
+
+  Widget _buildGridViewPets(List<PetRetonoAPI>? listaPets) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -117,18 +118,20 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12)),
-                               //Image.network(
-                              //   "${listaPets![index].imagem}",
-                              //   height: 140,
-                              //   width: 175,
-                              //   fit: BoxFit.cover,
-                              // ),
+                              child: listaPets![index].imagem != null
+                                  ? Image.memory(
+                                      listaPets[index].imagem!,
+                                      height: 140,
+                                      width: 175,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Container(),
                             ),
                             Container(
                                 padding: EdgeInsets.only(top: 4),
                                 alignment: Alignment.bottomCenter,
                                 child: Text(
-                                  "${listaPets![index].nome}",
+                                  "${listaPets[index].nome}",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 )),
                             Divider(),
@@ -218,7 +221,9 @@ class _HomePageState extends State<HomePage> {
       elevation: 0,
       actions: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+           
+          },
           child: new Container(
             padding: const EdgeInsets.only(right: 16),
             child: new Icon(

@@ -1,14 +1,15 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 
 class Service {
   String url = 'https://api-pets-prod.herokuapp.com/pet/';
 
-  Future<List<Pet>?> retonarListaDePets() async {
+  Future<List<PetRetonoAPI>?> retonarListaDePets() async {
     try {
-      List<Pet>? listaPets;
+      List<PetRetonoAPI>? listaPets;
       var request = await http.get(
         Uri.parse(url),
         headers: {
@@ -16,16 +17,17 @@ class Service {
         },
       );
       List<dynamic>? lista = jsonDecode(request.body);
-      listaPets = lista!.map((i) => Pet.fromJson(i)).toList();
+      listaPets = lista!.map((i) => PetRetonoAPI.fromJson(i)).toList();
       return listaPets;
     } catch (e) {
-      print(e);
       return null;
     }
   }
 
   Future<bool> cadastroPet(Pet pet) async {
     try {
+      var teste = json.encode(pet.toMap());
+
       var request = await http.post(Uri.parse(url),
           headers: {
             "content-type": "application/json",
@@ -34,7 +36,6 @@ class Service {
 
       return request.statusCode >= 200 && request.statusCode < 300;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -50,7 +51,6 @@ class Service {
 
       return request.statusCode >= 200 && request.statusCode < 300;
     } catch (e) {
-      print(e);
       return false;
     }
   }
