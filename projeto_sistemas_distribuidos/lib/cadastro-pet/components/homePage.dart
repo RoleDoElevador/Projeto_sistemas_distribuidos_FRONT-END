@@ -22,7 +22,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Service service = Service();
 
     return new BlocProvider(
       create: (BuildContext context) {

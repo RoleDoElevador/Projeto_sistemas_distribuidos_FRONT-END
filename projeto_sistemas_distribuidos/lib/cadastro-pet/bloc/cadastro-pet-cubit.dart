@@ -30,16 +30,13 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
 
 
   void inicializarListaPets() async {
-    String? imagemPetBase64;
-
-    void inicializarListaPets() async {
       service.retonarListaDePets().then(
             (pets) =>
             emit(
               state.patchState(listaPets: pets),
             ),
       );
-    }}
+    }
 
     Future tratarImagemPet(File imagem) async {
       imagemPet = await imagem.readAsBytes();
