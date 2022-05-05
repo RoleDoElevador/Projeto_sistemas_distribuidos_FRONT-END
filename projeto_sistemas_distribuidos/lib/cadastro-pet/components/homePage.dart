@@ -22,7 +22,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Service service = Service();
 
     return new BlocProvider(
       create: (BuildContext context) {
@@ -32,7 +31,6 @@ class _HomePageState extends State<HomePage> {
       },
       child: new BlocBuilder<CadastroPetCubit, CadastroPetModel>(
         builder: (context, state) {
-
           return new Scaffold(
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(50),
@@ -78,6 +76,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+
   Widget _buildGridViewPets(List<PetRetonoAPI>? listaPets) {
     return SingleChildScrollView(
       child: Column(
@@ -99,6 +98,9 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
+
+                        _bloc!.petSelecionado = listaPets![index];
+
                         Navigator.pushNamed(context, DetalhePet.ROUTE,
                             arguments: _bloc);
                       },
@@ -238,8 +240,34 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Color.fromRGBO(96, 80, 136, 1),
       child: ListView(
         children: [
+          DrawerHeader(
+            child: Center(
+              child: Column(
+                children: [
+                  new Image.asset(
+                    "assets/logo.png",
+                    scale: 1.8,
+                  ),
+                  new  Text(
+                    'OLX DE DOGUINHO',
+                    style: new TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Divider(color: Color.fromRGBO(243, 241, 237, 1)),
           ListTile(
+            leading: Icon(
+              Icons.pets_outlined,
+              color: Colors.white,
+            ),
             title: GestureDetector(
+              onTap: (){
+                Navigator.of(context).pushNamed(CadastroPet.ROUTE, arguments: _bloc!);
+              },
               child: Text(
                 "Cadastre seu PET",
                 style: TextStyle(color: Color.fromRGBO(243, 241, 237, 1)),
@@ -249,6 +277,10 @@ class _HomePageState extends State<HomePage> {
           ),
           Divider(color: Color.fromRGBO(243, 241, 237, 1)),
           ListTile(
+            leading: Icon(
+              Icons.info_outlined,
+              color: Colors.white,
+            ),
             title: GestureDetector(
               child: Text("Sobre Nós",
                   style: TextStyle(color: Color.fromRGBO(243, 241, 237, 1))),
@@ -257,6 +289,10 @@ class _HomePageState extends State<HomePage> {
           ),
           Divider(color: Color.fromRGBO(243, 241, 237, 1)),
           ListTile(
+            leading: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
             title: GestureDetector(
               child: Text("Configurações",
                   style: TextStyle(color: Color.fromRGBO(243, 241, 237, 1))),
