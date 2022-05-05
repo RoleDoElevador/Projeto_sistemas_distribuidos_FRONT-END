@@ -30,14 +30,15 @@ class _DetalhePetState extends State<DetalhePet> {
                   },
                   icon: Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    color: Colors.grey,
+                    color: Theme.of(context).primaryColor,
+                   size: 28,
                   ),
                   padding: EdgeInsets.all(0),
                 ),
               ),
               title: Text(
-                'oe',
-                style: TextStyle(color: Colors.black),
+                '${_bloc!.petSelecionado.nome}',
+                style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
               ),
               centerTitle: true,
             ),
@@ -128,11 +129,11 @@ class _DetalhePetState extends State<DetalhePet> {
   Widget _historiaDoPet() {
     return Container(
       margin: EdgeInsets.only(top: 8),
-      padding: EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+      padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
       decoration: BoxDecoration(
           color: Color(0xFFF3F1ED), borderRadius: BorderRadius.circular(15)),
       alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height / 7,
+      height: MediaQuery.of(context).size.height / 6.7,
       width: MediaQuery.of(context).size.width * 0.9,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,6 +164,7 @@ class _DetalhePetState extends State<DetalhePet> {
               'Thanos foi encontrado nas ruas da 25 de março, aparentemente abandonado por alguma familia, pois estava com uma coleira com seu nome e pipipi popopo.',
               maxLines: 4,
               overflow: TextOverflow.visible,
+              style: TextStyle(fontWeight: FontWeight.w400, letterSpacing: 1),
             ),
           )
         ],
@@ -177,7 +179,7 @@ class _DetalhePetState extends State<DetalhePet> {
       decoration: BoxDecoration(
           color: Color(0xFFF3F1ED), borderRadius: BorderRadius.circular(15)),
       alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height / 6,
+      height: MediaQuery.of(context).size.height / 5,
       width: MediaQuery.of(context).size.width * 0.9,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,13 +187,14 @@ class _DetalhePetState extends State<DetalhePet> {
           Row(
             children: [
               Container(
+                padding: EdgeInsets.only(top: 8),
                 child: Icon(
                   Icons.description_outlined,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(left: 10, top: 4),
+                padding: EdgeInsets.only(left: 10, top: 8),
                 child: Text(
                   'Descrição',
                   style: TextStyle(
@@ -203,7 +206,7 @@ class _DetalhePetState extends State<DetalhePet> {
             ],
           ),
           Container(
-            padding: EdgeInsets.only(left: 16, top: 18),
+            padding: EdgeInsets.only(left: 16, top: 16),
             child: Column(
               children: [
                 Container(
@@ -213,11 +216,11 @@ class _DetalhePetState extends State<DetalhePet> {
                       Icon(
                         Icons.hourglass_full_rounded,
                         color: Theme.of(context).primaryColor,
-                        size: 16,
+                        size: 20,
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 10),
-                        child: Text('4 anos'),
+                        child: Text('${_bloc!.petSelecionado.idade}'),
                       )
                     ],
                   ),
@@ -229,11 +232,11 @@ class _DetalhePetState extends State<DetalhePet> {
                       Icon(
                         Icons.pets_rounded,
                         color: Theme.of(context).primaryColor,
-                        size: 16,
+                        size: 20,
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 10),
-                        child: Text('Vira-Lata'),
+                        child: Text('${_bloc!.petSelecionado.raca}'),
                       )
                     ],
                   ),
@@ -245,11 +248,11 @@ class _DetalhePetState extends State<DetalhePet> {
                       Icon(
                         Icons.location_on_rounded,
                         color: Theme.of(context).primaryColor,
-                        size: 16,
+                        size: 20,
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 10),
-                        child: Text('Liberdade - SP'),
+                        child: Text('${_bloc!.petSelecionado.localizacao}'),
                       )
                     ],
                   ),
