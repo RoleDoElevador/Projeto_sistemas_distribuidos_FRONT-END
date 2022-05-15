@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/chatPet.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/homePage.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/inbox.dart';
 import 'package:projeto_sistemas_distribuidos/login/components/cadastroUsuario.dart';
 import 'package:projeto_sistemas_distribuidos/login/components/login.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         ChatPet.ROUTE: (context) => new ChatPet(),
         LoginPage.ROUTE: (context) => new LoginPage(),
         CadastroUsuario.ROUTE: (context) => new CadastroUsuario(),
+        Inbox.ROUTE: (context) => new Inbox(),
       },
     );
   }

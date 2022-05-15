@@ -36,50 +36,52 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
             image: AssetImage("assets/imagemFundoLogin.png"),
             fit: BoxFit.cover,
           )),
-      child: Container(
-        alignment: Alignment.center,
-        height: MediaQuery.of(context).size.height / 1.5,
-        width: MediaQuery.of(context).size.width / 1.2,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: new Column(children: [
-          new Container(
-            child: new Container(
-              padding: const EdgeInsets.only(left: 8),
-              child: new Image.asset(
-                "assets/logo.png",
-                scale: 1.5,
-              ),
-            ),
+      child: SingleChildScrollView(
+        child: Container(
+          alignment: Alignment.center,
+          height: MediaQuery.of(context).size.height / 1.3,
+          width: MediaQuery.of(context).size.width / 1.2,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
           ),
-          new Container(
-            padding: const EdgeInsets.only(bottom: 18),
-            child: Text("OLX DE DOGUINHOS", style: TextStyle(fontSize: 24,
-                color: const Color.fromRGBO(96, 80, 136, 1),
-                fontWeight: FontWeight.bold)),
-          ),
-          _retornaCampoForms("NOME", controladorEmail),
-          _retornaCampoForms("EMAIL", controladorEmail),
-          _retornaCampoForms("SENHA", controladorSenha),
-          new Container(
-            padding: EdgeInsets.only(top: 8),
-            child: new ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Color.fromRGBO(96, 80, 136, 1)),
-              onPressed: () {
-              },
-              child: new Text(
-                "Cadastrar",
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          child: new Column(children: [
+            new Container(
+              child: new Container(
+                padding: const EdgeInsets.only(left: 8),
+                child: new Image.asset(
+                  "assets/logo.png",
+                  scale: 1.5,
                 ),
               ),
             ),
-          ),
-        ]),
+            new Container(
+              padding: const EdgeInsets.only(bottom: 18),
+              child: Text("OLX DE DOGUINHOS", style: TextStyle(fontSize: 24,
+                  color: const Color.fromRGBO(96, 80, 136, 1),
+                  fontWeight: FontWeight.bold)),
+            ),
+            _retornaCampoForms("NOME", controladorEmail),
+            _retornaCampoForms("EMAIL", controladorEmail),
+            _retornaCampoForms("SENHA", controladorSenha),
+            new Container(
+              padding: EdgeInsets.only(top: 8),
+              child: new ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Color.fromRGBO(96, 80, 136, 1)),
+                onPressed: () {
+                },
+                child: new Text(
+                  "Cadastrar",
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }
