@@ -18,44 +18,45 @@ class _DetalhePetState extends State<DetalhePet> {
     _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
     return BlocProvider.value(
       value: _bloc!,
-      child: Container(
-        child: Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: Colors.white,
-              leading: Container(
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Theme.of(context).primaryColor,
-                   size: 28,
-                  ),
-                  padding: EdgeInsets.all(0),
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.white,
+            leading: Container(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Theme.of(context).primaryColor,
+                 size: 28,
                 ),
+                padding: EdgeInsets.all(0),
               ),
-              title: Text(
-                '${_bloc!.petSelecionado.nome}',
-                style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
-              ),
-              centerTitle: true,
             ),
-            body: _buildBody()),
+            title: Text(
+              '${_bloc!.petSelecionado.nome}',
+              style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+            ),
+            centerTitle: true,
+          ),
+          body: _buildBody(),
+          bottomNavigationBar:  _botaoEntrarEmContato(),
       ),
     );
   }
 
   Widget _buildBody() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _fotoDoPet(),
-        _historiaDoPet(),
-        _descricaoPet(),
-        _botaoEntrarEmContato(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _fotoDoPet(),
+          _historiaDoPet(),
+          _descricaoPet(),
+        ],
+      ),
     );
   }
 
@@ -161,7 +162,7 @@ class _DetalhePetState extends State<DetalhePet> {
           Container(
             padding: EdgeInsets.only(top: 8),
             child: Text(
-              'Thanos foi encontrado nas ruas da 25 de março, aparentemente abandonado por alguma familia, pois estava com uma coleira com seu nome e pipipi popopo.',
+              "${_bloc!.petSelecionado.historia}",
               maxLines: 4,
               overflow: TextOverflow.visible,
               style: TextStyle(fontWeight: FontWeight.w400, letterSpacing: 1),

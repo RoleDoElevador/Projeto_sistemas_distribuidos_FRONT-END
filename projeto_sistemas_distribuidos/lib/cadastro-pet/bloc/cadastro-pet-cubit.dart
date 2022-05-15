@@ -38,13 +38,8 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
       );
     }
 
-    Future tratarImagemPet(File imagem) async {
-      imagemPet = await imagem.readAsBytes();
-      String imagemTratada = imagemPet.toString();
-      return imagemTratada;
-    }
-
-    Future abrirGaleria() async {
+  @override
+  Future abrirGaleria() async {
       try {
         final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -60,11 +55,12 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
       }
     }
 
-
-
   @override
-  void salvarCadastroPet(BuildContext context, Pet pet) {
+  void cadastrarPet(BuildContext context, Pet pet) {
+
+
     service.cadastroPet(pet);
+    print(pet);
   }
 
 }
