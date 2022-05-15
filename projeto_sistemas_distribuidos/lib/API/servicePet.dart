@@ -1,17 +1,38 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
+import 'package:projeto_sistemas_distribuidos/login/model/user.dart';
 
 class Service {
-  String url = 'https://api-pets-prod.herokuapp.com/pet/';
+  String url = 'https://api-pets-prod.herokuapp.com/';
+
+  Future<User?> CadastrarUsuario(User user) async {
+    String _url = "${url}usuario/";
+
+    try {
+      var request = await http.post(Uri.parse(_url),
+          headers: {
+            "content-type": "application/json",
+          },
+          body: json.encode(user.toMap()));
+
+      User responseUser = User.fromJson(json.decode(request.body));
+      return responseUser;
+    } catch (e) {
+      return null;
+    }
+  }
 
   Future<List<PetRetonoAPI>?> retonarListaDePets() async {
+    String _url = "${url}pet/";
+
     try {
       List<PetRetonoAPI>? listaPets;
       var request = await http.get(
-        Uri.parse(url),
+        Uri.parse(_url),
         headers: {
           "content-type": "application/json",
         },
@@ -25,10 +46,10 @@ class Service {
   }
 
   Future<bool> cadastroPet(Pet pet) async {
-    try {
-      var teste = json.encode(pet.toMap());
+    String _url = "${url}pet/";
 
-      var request = await http.post(Uri.parse(url),
+    try {
+      var request = await http.post(Uri.parse(_url),
           headers: {
             "content-type": "application/json",
           },
@@ -40,10 +61,30 @@ class Service {
     }
   }
 
+  Future<User?> verificarCredenciaisUsuario(User user) async {
+    String _url = "${url}usuario/${user.email}";
+
+    try {
+      var request = await http.get(
+        Uri.parse(_url),
+        headers: {
+          "content-type": "application/json",
+        },
+      );
+      User response = User.fromJson(json.decode(request.body));
+
+      return response;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<bool> deletePet(Pet pet) async {
+    String _url = "${url}pet/";
+
     try {
       var request = await http.delete(
-        Uri.parse(url + pet.codigo.toString()),
+        Uri.parse(_url + pet.id.toString()),
         headers: {
           "content-type": "application/json",
         },
@@ -56,8 +97,10 @@ class Service {
   }
 
   Future<bool> updatePet(Pet pet) async {
+    String _url = "${url}pet/";
+
     try {
-      var request = await http.put(Uri.parse(url),
+      var request = await http.put(Uri.parse(_url),
           headers: {
             "content-type": "application/json",
           },
