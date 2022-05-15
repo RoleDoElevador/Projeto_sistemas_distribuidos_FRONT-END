@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_sistemas_distribuidos/API/service.dart';
+import 'package:projeto_sistemas_distribuidos/API/servicePet.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/homePage.dart';
 import 'package:projeto_sistemas_distribuidos/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/login/components/cadastroUsuario.dart';
+import 'package:projeto_sistemas_distribuidos/login/model/user.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -72,7 +73,16 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           if (_formKeyUser.currentState!.validate() ||
               _formKeyPassword.currentState!.validate()) {
-            Navigator.of(context).pushReplacementNamed(HomePage.ROUTE);
+
+            User usuario = new User(email: controladorEmail.text, senha: controladorSenha.text);
+
+            User? usuarioEncontrado = await _bloc?.buscarUsuario(usuario);
+
+            if(usuarioEncontrado?.email == controladorEmail.text && usuarioEncontrado?.senha == controladorSenha.text){
+              Navigator.of(context).pushReplacementNamed(HomePage.ROUTE);
+            } else {
+             print("DEU RUIM");
+            }
           }
           //await service.retonarListaDePets();
         },

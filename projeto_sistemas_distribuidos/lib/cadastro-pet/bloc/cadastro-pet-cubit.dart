@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:projeto_sistemas_distribuidos/API/service.dart';
+import 'package:projeto_sistemas_distribuidos/API/servicePet.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 import 'cadastro-pet-cubit-action.dart';
@@ -57,10 +57,7 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
 
   @override
   void cadastrarPet(BuildContext context, Pet pet) {
-
-
     service.cadastroPet(pet);
     print(pet);
   }
-
 }
