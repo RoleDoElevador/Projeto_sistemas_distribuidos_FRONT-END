@@ -18,6 +18,8 @@ class _CadastroPetState extends State<CadastroPet> {
   TextEditingController controladorRacaPet = new TextEditingController();
   TextEditingController controladorLocalizacaoPet = new TextEditingController();
   TextEditingController controladorHistoriaPet = new TextEditingController();
+  TextEditingController controladorPortePet = new TextEditingController();
+
 
   Pet pet = new Pet();
 
@@ -70,33 +72,37 @@ class _CadastroPetState extends State<CadastroPet> {
               ),
             ),
             _retornaCampoForms("NOME", controladorNomePet, TextInputType.text),
-            _retornaCampoForms("IDADE", controladoridadePet, TextInputType.number),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _retornaCampoIdadePorte(
+                    "IDADE", controladoridadePet, TextInputType.number),
+                _retornaCampoIdadePorte(
+                    "PORTE", controladorPortePet, TextInputType.text),
+              ],
+            ),
             _retornaCampoForms("RAÇA", controladorRacaPet, TextInputType.text),
-            _retornaCampoForms("LOCALIZAÇÃO", controladorLocalizacaoPet, TextInputType.text),
-            _retornaCampoForms("HISTÓRIA DO PET", controladorHistoriaPet, TextInputType.text),
+            _retornaCampoForms(
+                "LOCALIZAÇÃO", controladorLocalizacaoPet, TextInputType.text),
+            _retornaCampoForms(
+                "HISTÓRIA DO PET", controladorHistoriaPet, TextInputType.text),
             _retornaAnexoFoto(),
             new Container(
               width: MediaQuery.of(context).size.width / 2,
               child: new ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(96, 80, 136, 1)),
+                    primary: Color.fromRGBO(96, 80, 136, 1.0)),
                 onPressed: () async {
-                  _bloc!.nomePet = controladorNomePet.text;
-                  _bloc!.idadePet = int.parse(controladoridadePet.text);
-                  _bloc!.racaPet = controladorRacaPet.text;
-                  _bloc!.localizacaoPet = controladorLocalizacaoPet.text;
-                  _bloc!.historiaPet = controladorHistoriaPet.text;
-
-                  pet.nome = _bloc!.nomePet;
-                  pet.idade = _bloc!.idadePet;
-                  pet.raca = _bloc!.racaPet;
-                  pet.localizacao = _bloc!.localizacaoPet;
-
-                  pet.imagem = await _bloc!.tratarImagemPet(_bloc!.state.fotoCadastroPet!);
+                  pet.nome = controladorNomePet.text;
+                  pet.idade = int.parse(controladoridadePet.text);
+                  pet.raca = controladorRacaPet.text;
+                  pet.localizacao = controladorLocalizacaoPet.text;
+                  pet.historia = controladorHistoriaPet.text;
+                  pet.porte = controladorPortePet.text;
                   pet.imagem = _bloc!.imagemPetBase64;
 
-                  _bloc?.salvarCadastroPet(context, pet);
-                  _bloc?.inicializarListaPets();
+                  _bloc!.cadastrarPet(context, pet);
+                  _bloc!.inicializarListaPets();
                 },
                 child: new Text("CADASTRAR",
                     style: const TextStyle(
@@ -111,23 +117,21 @@ class _CadastroPetState extends State<CadastroPet> {
     );
   }
 
-  Widget _retornaCampoForms(
-      String nomeCampo, TextEditingController controlador, TextInputType tipoTeclado) {
+  Widget _retornaCampoIdadePorte(String nomeCampo,
+      TextEditingController controlador, TextInputType tipoTeclado) {
     return new Container(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
-      width: MediaQuery.of(context).size.width / 1.2,
+      width: MediaQuery.of(context).size.width * 0.38,
       child: new Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           new Container(
             alignment: Alignment.topLeft,
-            child: new Text(
-              nomeCampo,
-              style: TextStyle(
-                  fontSize: 20,
-                  color: const Color.fromRGBO(96, 80, 136, 1),
-                  fontWeight: FontWeight.bold)
-            ),
+            child: new Text(nomeCampo,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: const Color.fromRGBO(96, 80, 136, 1),
+                    fontWeight: FontWeight.bold)),
           ),
           Flexible(
             flex: 5,
@@ -147,7 +151,49 @@ class _CadastroPetState extends State<CadastroPet> {
                   errorBorder: InputBorder.none,
                   focusedErrorBorder: InputBorder.none,
                 ),
+                keyboardType: tipoTeclado,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
+  Widget _retornaCampoForms(String nomeCampo, TextEditingController controlador,
+      TextInputType tipoTeclado) {
+    return new Container(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      width: MediaQuery.of(context).size.width / 1.2,
+      child: new Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          new Container(
+            alignment: Alignment.topLeft,
+            child: new Text(nomeCampo,
+                style: TextStyle(
+                    fontSize: 20,
+                    color: const Color.fromRGBO(96, 80, 136, 1),
+                    fontWeight: FontWeight.bold)),
+          ),
+          Flexible(
+            flex: 5,
+            child: new Container(
+              padding: const EdgeInsets.only(left: 8),
+              decoration: new BoxDecoration(
+                borderRadius: new BorderRadius.circular(12),
+                color: const Color.fromRGBO(228, 226, 222, 1),
+              ),
+              child: new TextField(
+                maxLines: null,
+                controller: controlador,
+                cursorColor: Colors.transparent,
+                decoration: new InputDecoration(
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  focusedErrorBorder: InputBorder.none,
+                ),
                 keyboardType: tipoTeclado,
               ),
             ),

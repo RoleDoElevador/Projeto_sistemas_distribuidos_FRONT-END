@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
-import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 
 class CadastroPetModel {
    File? fotoCadastroPet;

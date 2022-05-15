@@ -10,8 +10,11 @@ class PetRetonoAPI {
   Uint8List? imagem;
   int? idade;
   int? codigo;
+  String? historia;
+  String? porte;
+  String? idDono;
 
-  PetRetonoAPI({this.nome, this.raca, this.localizacao, this.imagem, this.idade,this.codigo});
+  PetRetonoAPI({this.nome, this.raca, this.localizacao, this.imagem, this.idade,this.codigo, this.historia, this.porte, this.idDono});
 
   static PetRetonoAPI fromJson(Map<String, dynamic> json) {
     return new PetRetonoAPI(
@@ -20,7 +23,10 @@ class PetRetonoAPI {
       localizacao: json['localizacao'],
       imagem: base64.decode(json['imagem']),
       idade: json['idade'],
-      codigo: json['codigo']
+      codigo: json['codigo'],
+        historia: json['historia'],
+        porte:  json['porte'],
+        idDono: json['idDono']
     );
   }
 
@@ -31,7 +37,10 @@ class PetRetonoAPI {
       "localizacao": this.localizacao,
       "imagem": this.imagem,
       "idade": this.idade,
-      "codigo":this.codigo
+      "codigo":this.codigo,
+      "historia": this.historia,
+      "porte": this.porte,
+      "idDono": this.idDono,
     };
   }
 }
