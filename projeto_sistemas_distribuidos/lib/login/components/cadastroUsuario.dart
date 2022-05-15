@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_sistemas_distribuidos/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_sistemas_distribuidos/login/model/user.dart';
 
 
 class CadastroUsuario extends StatefulWidget {
@@ -61,7 +62,7 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                   color: const Color.fromRGBO(96, 80, 136, 1),
                   fontWeight: FontWeight.bold)),
             ),
-            _retornaCampoForms("NOME", controladorEmail),
+            _retornaCampoForms("NOME", controladorNome),
             _retornaCampoForms("EMAIL", controladorEmail),
             _retornaCampoForms("SENHA", controladorSenha),
             new Container(
@@ -70,6 +71,8 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
                 style: ElevatedButton.styleFrom(
                     primary: Color.fromRGBO(96, 80, 136, 1)),
                 onPressed: () {
+                  User user = new User(nome: controladorNome.text, id: null, email: controladorEmail.text, senha: controladorSenha.text);
+                  _bloc?.cadastrarUsuario(user);
                 },
                 child: new Text(
                   "Cadastrar",
