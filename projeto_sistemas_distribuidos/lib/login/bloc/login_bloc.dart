@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:projeto_sistemas_distribuidos/API/servicePet.dart';
+import 'package:projeto_sistemas_distribuidos/API/service.dart';
 import 'package:projeto_sistemas_distribuidos/login/bloc/login-cubit-action.dart';
 import 'package:projeto_sistemas_distribuidos/login/bloc/login-cubit-model.dart';
 import 'package:projeto_sistemas_distribuidos/login/model/user.dart';

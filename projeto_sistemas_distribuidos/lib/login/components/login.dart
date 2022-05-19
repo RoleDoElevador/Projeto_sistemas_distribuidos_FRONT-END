@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_sistemas_distribuidos/API/servicePet.dart';
+import 'package:projeto_sistemas_distribuidos/API/service.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/homePage.dart';
 import 'package:projeto_sistemas_distribuidos/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

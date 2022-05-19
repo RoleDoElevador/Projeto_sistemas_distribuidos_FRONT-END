@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/mensagem.dart';
 import 'package:projeto_sistemas_distribuidos/login/model/user.dart';
 
 class Service {
@@ -111,4 +112,20 @@ class Service {
       return false;
     }
   }
+
+  Future<List<Mensagem>?> listaMensagensRecebidas(String id) async {
+    var _url = "${url}pets/mensagens/${id}";
+    List<Mensagem>? listaMensagens;
+
+    try {
+      var request = await http.get(Uri.parse(_url));
+      List<dynamic>? lista = jsonDecode(request.body);
+      listaMensagens = lista!.map((i) => Mensagem.fromJson(i)).toList();
+      return listaMensagens;
+    } catch (e) {
+      return null;
+    }
+  }
+
+
 }
