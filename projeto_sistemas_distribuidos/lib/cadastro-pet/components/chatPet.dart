@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/mensagem.dart';
+import 'package:intl/intl.dart';
 
 class ChatPet extends StatefulWidget {
   const ChatPet({Key? key}) : super(key: key);
@@ -14,15 +17,21 @@ class ChatPet extends StatefulWidget {
 class _ChatPetState extends State<ChatPet> {
   TextEditingController _messageController = TextEditingController();
   CadastroPetCubit? _bloc;
+  bool buscouLista = false;
   @override
   Widget build(BuildContext context) {
     _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
+    if (!buscouLista) {
+      _bloc?.buscarMensagens(
+          _bloc!.idUsuario, _bloc!.mensagemSelecionada.idDestinatario!);
+      buscouLista = true;
+    }
+
     return BlocProvider.value(
       value: _bloc!,
       child: Scaffold(
         appBar: _buildAppBar(),
         body: _buildBody(),
-      
       ),
     );
   }
@@ -38,6 +47,7 @@ class _ChatPetState extends State<ChatPet> {
           leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
+                _bloc?.state.listaMensagensTrocadas = [];
               },
               icon: Icon(
                 Icons.arrow_back_ios_rounded,
@@ -48,25 +58,29 @@ class _ChatPetState extends State<ChatPet> {
             //crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'TESTE',
+                '${_bloc!.mensagemSelecionada.nome}',
                 style: TextStyle(color: Colors.black),
               ),
-              Text('São Paulo - SP', style: TextStyle(color: Colors.grey))
+              Text('${_bloc!.mensagemSelecionada.localizacao}',
+                  style: TextStyle(color: Colors.grey))
             ],
           ),
           centerTitle: true,
           actions: [
             Container(
-              height: 100,
-              width: 100,
+              padding: EdgeInsets.only(right: 16),
               child: CircleAvatar(
-                radius: 30,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: CircleAvatar(
-                  radius: 26,
-                  backgroundImage: AssetImage('assets/cachorro.jpg'),
-                ),
-              ),
+                  foregroundColor: Colors.blue,
+                  backgroundColor: Colors.blue,
+                  radius: 30,
+                  child: ClipOval(
+                    child: Image.memory(
+                      _bloc!.mensagemSelecionada.imagem!,
+                      fit: BoxFit.fill,
+                      width: 100,
+                      height: 70,
+                    ),
+                  )),
             )
           ],
         ),
@@ -75,45 +89,64 @@ class _ChatPetState extends State<ChatPet> {
   }
 
   Widget _buildBody() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-              height: MediaQuery.of(context).size.height * 0.7,
-              margin: EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
-              child: ListView.builder(
-                  itemCount: 20,
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (BuildContext context, int i) {
-                    return Container(
-                      child: Row(
-                        //alinhar as mensagens por aqui
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Flexible(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(5)),
-                              alignment: Alignment.centerRight,
-                              margin: EdgeInsets.only(top: 4, bottom: 4),
-                              width: MediaQuery.of(context).size.width * 0.3,
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                child: Text(
-                                  'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                                  style: TextStyle(color: Colors.white),
+    return BlocBuilder<CadastroPetCubit, CadastroPetModel>(
+      builder: (context, state) {
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  margin:
+                      EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                     // reverse: true,
+                      itemCount: state.listaMensagensTrocadas?.length == null
+                          ? 0
+                          : state.listaMensagensTrocadas?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          child: Row(
+                            //alinhar as mensagens por aqui
+                            mainAxisAlignment: state
+                                        .listaMensagensTrocadas?[index]
+                                        .idRemetente ==
+                                    _bloc?.idUsuario
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: state.listaMensagensTrocadas?[index]
+                                                .idRemetente ==
+                                            _bloc?.idUsuario?
+                                        Theme.of(context).primaryColor:
+                                       Colors.grey[600],
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  alignment: Alignment.centerLeft,
+                                  margin: EdgeInsets.only(top: 4, bottom: 4),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.3,
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    child: Text(
+                                      '${state.listaMensagensTrocadas?[index].conteudo}',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  })),
-                  _bottomMessage()
-        ],
-      ),
+                        );
+                      })),
+              _bottomMessage()
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -159,7 +192,11 @@ class _ChatPetState extends State<ChatPet> {
                   shape: BoxShape.circle,
                   color: Theme.of(context).primaryColor),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  _bloc?.realizarFluxoCompletoEnvioMensagem(
+                      _messageController.text);
+                  _messageController.clear();
+                },
                 icon: Icon(
                   Icons.send,
                   color: Colors.white,
