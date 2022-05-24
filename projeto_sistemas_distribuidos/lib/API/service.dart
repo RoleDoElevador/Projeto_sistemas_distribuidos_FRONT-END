@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/inbox-mensagem.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/mensagem.dart';
 import 'package:projeto_sistemas_distribuidos/login/model/user.dart';
 
 class Service {
@@ -105,6 +106,52 @@ class Service {
             "content-type": "application/json",
           },
           body: json.encode(pet.toMap()));
+
+      return request.statusCode >= 200 && request.statusCode < 300;
+    } catch (e) {
+      return false;
+    }
+  }
+
+   Future<List<Mensagem>?> listaMensagensTrocadas(String idUsuario, String idPet  ) async {
+    var _url = "${url}pets/mensagens/inbox/mensagens/$idUsuario/$idPet";
+    List<Mensagem>? listaMensagens;
+
+    try {
+      var request = await http.get(Uri.parse(_url));
+      List<dynamic>? lista = jsonDecode(request.body);
+      listaMensagens =  lista!.map((i) => Mensagem.fromJson(i)).toList();
+      return listaMensagens;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<inboxMensagem>?> listaInboxMensagens(
+      String idUsuario) async {
+    var _url = "${url}pets/mensagens/inbox/$idUsuario";
+    List<inboxMensagem>? listaMensagensInbox;
+    try {
+      var request = await http.get(Uri.parse(_url));
+      List<dynamic>? lista = jsonDecode(request.body);
+      listaMensagensInbox =
+          lista!.map((i) => inboxMensagem.fromJson(i)).toList();
+      return listaMensagensInbox;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool> enviarMensagem(Mensagem mensagem) async {
+    var _url = "${url}pets/mensagens/";
+
+    try {
+      var test = json.encode(mensagem.toMap());
+      var request = await http.post(Uri.parse(_url),
+          headers: {
+            "content-type": "application/json",
+          },
+          body: json.encode(mensagem.toMap()));
 
       return request.statusCode >= 200 && request.statusCode < 300;
     } catch (e) {

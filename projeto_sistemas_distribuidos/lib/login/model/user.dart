@@ -1,4 +1,4 @@
-import 'package:projeto_sistemas_distribuidos/API/servicePet.dart';
+import 'package:projeto_sistemas_distribuidos/API/service.dart';
 
 class User {
   String? id;

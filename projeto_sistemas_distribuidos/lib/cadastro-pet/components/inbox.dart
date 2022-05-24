@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit-model.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
@@ -18,6 +20,8 @@ class _InboxState extends State<Inbox> {
   @override
   Widget build(BuildContext context) {
     _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
+    _bloc?.buscarMensagensInbox('ceaa3009-bd00-46e8-9257-3617c91124d8');
+    //ceaa3009-bd00-46e8-9257-3617c91124d8
 
     return new BlocProvider.value(
       value: _bloc!,
@@ -36,56 +40,75 @@ class _InboxState extends State<Inbox> {
     );
   }
 
-  Widget _buildListViewMensagens(){
-    return new Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Column(
-        children: [
-          new Container(
-            padding: const EdgeInsets.only(top: 8, left: 8),
-            alignment: Alignment.centerLeft,
-            child: Text("Mensagens", style: new TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: const Color.fromRGBO(96, 80, 136, 1))),
-          ),
-          Expanded(
-            child: new ListView.builder(
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.only(top: 8),
-                itemCount: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return new SingleChildScrollView(
-                    padding: EdgeInsets.only(top: 4),
-                    child: new ListTile(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(ChatPet.ROUTE, arguments: _bloc);
-                      },
-                      leading: new CircleAvatar(
-                        maxRadius: 26,
-                        minRadius: 10,
-                        backgroundImage: AssetImage("assets/cachorro.jpg"),
-                        backgroundColor: const Color.fromRGBO(96, 80, 136, 1),
+  Widget _buildListViewMensagens() {
+    return new BlocBuilder<CadastroPetCubit, CadastroPetModel>(
+      builder: (context, state) {
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Column(
+            children: [
+              new Container(
+                padding: const EdgeInsets.only(top: 8, left: 16),
+                alignment: Alignment.centerLeft,
+                child: Text("Mensagens",
+                    style: new TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromRGBO(96, 80, 136, 1))),
+              ),
+              Expanded(
+                child: new ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  padding: EdgeInsets.only(top: 8),
+                  itemCount: state.listaMensagensInbox?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return new SingleChildScrollView(
+                      padding: EdgeInsets.only(top: 4),
+                      child: Column(
+                        children: [
+                          new ListTile(
+                            onTap: () {
+                              _bloc?.mensagemSelecionada =
+                                  state.listaMensagensInbox![index];
+                              Navigator.of(context)
+                                  .pushNamed(ChatPet.ROUTE, arguments: _bloc);
+                            },
+                            leading: CircleAvatar(
+                                foregroundColor: Colors.blue,
+                                backgroundColor: Colors.white,
+                                radius: 25,
+                                child: ClipOval(
+                                  child: Image.memory(
+                                    state.listaMensagensInbox![index].imagem ?? Uint8List(1),
+                                    fit: BoxFit.cover,
+                                    width: 70,
+                                    height: 70,
+                                  ),
+                                )),
+                            title: new Text(
+                                "${state.listaMensagensInbox?[index].nome}",
+                                style: new TextStyle(
+                                    fontFamily: 'Roboto-Regular.ttf',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        const Color.fromRGBO(96, 80, 136, 1))),
+                            subtitle: new Text(
+                                "${state.listaMensagensInbox?[index].conteudo}"),
+                          ),
+                          Divider()
+                        ],
                       ),
-                      title: new Text("Thanos",
-                          style: new TextStyle(
-                              fontFamily: 'Roboto-Regular.ttf',
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: const Color.fromRGBO(96, 80, 136, 1))),
-                      subtitle: new Text("BOM DIA O CARALHO"),
-                      trailing: new Icon(
-                        Icons.arrow_forward_ios,
-                        color: const Color.fromRGBO(96, 80, 136, 1),
-                      ),
-                    ),
-                  );
-                }),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -116,5 +139,4 @@ class _InboxState extends State<Inbox> {
       backgroundColor: Colors.white,
     );
   }
-
 }

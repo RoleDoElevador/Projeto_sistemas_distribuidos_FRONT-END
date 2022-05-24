@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/chatPet.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/inbox-mensagem.dart';
 
 class DetalhePet extends StatefulWidget {
   const DetalhePet({Key? key}) : super(key: key);
@@ -287,6 +288,17 @@ class _DetalhePetState extends State<DetalhePet> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25))),
         onPressed: () {
+          _bloc?.mensagemSelecionada = 
+          inboxMensagem(
+            id: null,
+            idRemetente: _bloc?.idUsuario,
+            idDestinatario: _bloc?.petSelecionado.idDono,
+            conteudo: null,
+            data: null,
+            nome:  _bloc?.petSelecionado.nome,
+            imagem:  _bloc?.petSelecionado.imagem,
+            localizacao:_bloc?.petSelecionado.localizacao
+          );
           Navigator.of(context).pushNamed(ChatPet.ROUTE, arguments: _bloc);
         },
         child: Container(
