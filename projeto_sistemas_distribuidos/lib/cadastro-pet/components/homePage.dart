@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
               child: new FloatingActionButton(
                 backgroundColor: Color.fromRGBO(96, 80, 136, 1),
                 onPressed: () {
+                  
                   Navigator.of(context)
                       .pushNamed(CadastroPet.ROUTE, arguments: _bloc);
                 },

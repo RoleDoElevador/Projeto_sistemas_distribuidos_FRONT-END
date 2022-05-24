@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:projeto_sistemas_distribuidos/API/service.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/homePage.dart';
 import 'package:projeto_sistemas_distribuidos/login/bloc/login_bloc.dart';
@@ -51,12 +52,11 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(30),
         ),
-        child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+        child:
+            new Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           _buildHeader(),
-          _retornaCampoForms("EMAIL", controladorEmail, _formKeyUser),
-          _retornaCampoForms("SENHA", controladorSenha, _formKeyPassword),
+          _retornarCampoForms("EMAIL", controladorEmail, _formKeyUser, false),
+          _retornarCampoForms("SENHA", controladorSenha, _formKeyPassword, true),
           _retornaBotaoEntrar(),
           _retornaBotaoCadastro(),
         ]),
@@ -68,23 +68,10 @@ class _LoginPageState extends State<LoginPage> {
     return new Container(
       padding: EdgeInsets.only(top: 16),
       child: new ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            primary: Color.fromRGBO(96, 80, 136, 1)),
-        onPressed: () async {
-          if (_formKeyUser.currentState!.validate() ||
-              _formKeyPassword.currentState!.validate()) {
-
-            User usuario = new User(email: controladorEmail.text, senha: controladorSenha.text);
-
-            User? usuarioEncontrado = await _bloc?.buscarUsuario(usuario);
-
-            if(usuarioEncontrado?.email == controladorEmail.text && usuarioEncontrado?.senha == controladorSenha.text){
-              Navigator.of(context).pushReplacementNamed(HomePage.ROUTE);
-            } else {
-             print("DEU RUIM");
-            }
-          }
-          //await service.retonarListaDePets();
+        style:
+            ElevatedButton.styleFrom(primary: Color.fromRGBO(96, 80, 136, 1)),
+        onPressed: () {
+          _validarAcesso();
         },
         child: new Text(
           "ENTRAR",
@@ -95,6 +82,59 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _validarAcesso() async {
+    if (_formKeyUser.currentState!.validate() ||
+        _formKeyPassword.currentState!.validate()) {
+      User usuario =
+          new User(email: controladorEmail.text, senha: controladorSenha.text);
+      User? usuarioEncontrado = await _bloc?.buscarUsuario(usuario);
+
+      if (usuarioEncontrado?.email == controladorEmail.text &&
+          usuarioEncontrado?.senha == controladorSenha.text) {
+        Navigator.of(context).pushReplacementNamed(HomePage.ROUTE);
+      } else {
+        return _exibirDialogLoginIncorreto();
+      }
+    }
+  }
+
+  Future<void> _exibirDialogLoginIncorreto() {
+    return showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Center(child: Text("Usuário ou senha Incorreta", textAlign: TextAlign.center)),
+          alignment: Alignment.centerRight,
+          contentTextStyle: TextStyle(fontSize: 16, color: Colors.white),
+          backgroundColor: Color.fromRGBO(96, 80, 136, 1),
+          contentPadding: EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20.0) ),
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          content: Text(
+            "O E-mail ou senha inserida está incorreto, tente novamente.", textAlign: TextAlign.center,),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            Column(
+              children: [
+                Divider(
+                  color: Colors.white,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Fechar",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )),
+              ],
+            )
+          ],
+        ));
   }
 
   Widget _retornaBotaoCadastro() {
@@ -115,9 +155,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-  Widget _retornaCampoForms(
-      String nomeCampo, TextEditingController controlador, Key key) {
+  Widget _retornarCampoForms(
+      String nomeCampo, TextEditingController controlador, Key key, bool obscureText) {
     return Form(
       key: key,
       child: new Container(
@@ -144,15 +183,19 @@ class _LoginPageState extends State<LoginPage> {
               ),
               child: new TextFormField(
                 controller: controlador,
+                obscureText: obscureText,
+                maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
+                maxLength: 100,
                 cursorColor: Colors.transparent,
                 decoration: new InputDecoration(
+                  counterText: '',
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   errorBorder: InputBorder.none,
                 ),
                 validator: (String? value) {
                   if (value!.isEmpty) {
-                    return 'O usuário é obrigatório';
+                    return '${nomeCampo} é obrigatório(a)';
                   } else
                     return null;
                 },

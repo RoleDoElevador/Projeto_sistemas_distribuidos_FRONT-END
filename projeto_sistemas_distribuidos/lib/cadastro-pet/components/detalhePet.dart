@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/chatPet.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/inbox-mensagem.dart';
 
 class DetalhePet extends StatefulWidget {
   const DetalhePet({Key? key}) : super(key: key);
@@ -13,36 +14,38 @@ class DetalhePet extends StatefulWidget {
 
 class _DetalhePetState extends State<DetalhePet> {
   CadastroPetCubit? _bloc;
+
   @override
   Widget build(BuildContext context) {
     _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
     return BlocProvider.value(
       value: _bloc!,
       child: Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            leading: Container(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: Theme.of(context).primaryColor,
-                 size: 28,
-                ),
-                padding: EdgeInsets.all(0),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: Container(
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: Theme.of(context).primaryColor,
+                size: 28,
               ),
+              padding: EdgeInsets.all(0),
             ),
-            title: Text(
-              '${_bloc!.petSelecionado.nome}',
-              style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
-            ),
-            centerTitle: true,
           ),
-          body: _buildBody(),
-          bottomNavigationBar:  _botaoEntrarEmContato(),
+          title: Text(
+            '${_bloc!.petSelecionado.nome}',
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+        ),
+        body: _buildBody(),
       ),
     );
   }
@@ -50,11 +53,11 @@ class _DetalhePetState extends State<DetalhePet> {
   Widget _buildBody() {
     return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _fotoDoPet(),
           _historiaDoPet(),
           _descricaoPet(),
+          _botaoEntrarEmContato(),
         ],
       ),
     );
@@ -62,20 +65,10 @@ class _DetalhePetState extends State<DetalhePet> {
 
   Widget _fotoDoPet() {
     return Container(
-      // color: Colors.red,
       alignment: Alignment.center,
       height: MediaQuery.of(context).size.height / 2.5,
       child: Row(
         children: [
-          // Container(
-          //   width: 20,
-          //   child: IconButton(
-          //     padding: EdgeInsets.all(0),
-          //     icon: Icon(Icons.chevron_left,
-          //         color: Theme.of(context).primaryColor, size: 50),
-          //     onPressed: () => {},
-          //   ),
-          // ),
           Container(
             margin: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
             alignment: Alignment.center,
@@ -86,42 +79,57 @@ class _DetalhePetState extends State<DetalhePet> {
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: 10,
+                  itemCount: 3,
                   itemBuilder: (context, int i) {
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Container(
+                        //   width: 20,
+                        //   child: IconButton(
+                        //     padding: EdgeInsets.all(0),
+                        //     icon: Icon(Icons.chevron_left,
+                        //         color: Theme.of(context).primaryColor, size: 50),
+                        //     onPressed: () => {},
+                        //   ),
+                        // ),
                         Center(
                             child: Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(left: 2, right: 2),
-                          // height: MediaQuery.of(context).size.height / 4,
                           width: MediaQuery.of(context).size.width * 0.9,
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/cachorro.jpg'),
-                                fit: BoxFit.fill,
-                              ),
                               borderRadius: BorderRadius.circular(15)),
-                        ))
+                          child: new ClipRRect(
+                            borderRadius:
+                                new BorderRadius.all(Radius.circular(12)),
+                            child: _bloc?.petSelecionado.imagem != null
+                                ? new Image.memory(
+                                    _bloc!.petSelecionado.imagem!,
+                                    fit: BoxFit.fill,
+                                  )
+                                : new Container(),
+                          ),
+                        )),
+                        // Container(
+                        //   alignment: Alignment.centerRight,
+                        //   padding: EdgeInsets.all(0),
+                        //   height: MediaQuery.of(context).size.height,
+                        //   width: 20,
+                        //   child: IconButton(
+                        //     padding: EdgeInsets.all(0),
+                        //     icon: Icon(Icons.chevron_right,
+                        //         color: Colors.black,
+                        //         size: 50),
+                        //     onPressed: () => {},
+                        //   ),
+                        // ),
                       ],
                     );
                   }),
             ),
           ),
-          // Container(
-          //   alignment: Alignment.centerLeft,
-          //   padding: EdgeInsets.all(0),
-          //   height: MediaQuery.of(context).size.height,
-          //   width:20,
-          //   child: IconButton(
-          //     padding: EdgeInsets.all(0),
-          //     icon: Icon(Icons.chevron_right,
-          //         color: Theme.of(context).primaryColor, size: 50),
-          //     onPressed: () => {},
-          //   ),
-          // ),
         ],
       ),
     );
@@ -130,14 +138,12 @@ class _DetalhePetState extends State<DetalhePet> {
   Widget _historiaDoPet() {
     return Container(
       margin: EdgeInsets.only(top: 8),
-      padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 4),
+      padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 4),
       decoration: BoxDecoration(
           color: Color(0xFFF3F1ED), borderRadius: BorderRadius.circular(15)),
-      alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height / 6.7,
+      height: MediaQuery.of(context).size.height / 5,
       width: MediaQuery.of(context).size.width * 0.9,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
             children: [
@@ -148,6 +154,7 @@ class _DetalhePetState extends State<DetalhePet> {
                 ),
               ),
               Container(
+                alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 10, top: 4),
                 child: Text(
                   'Sua História',
@@ -159,13 +166,17 @@ class _DetalhePetState extends State<DetalhePet> {
               )
             ],
           ),
-          Container(
-            padding: EdgeInsets.only(top: 8),
-            child: Text(
-              "${_bloc!.petSelecionado.historia}",
-              maxLines: 4,
-              overflow: TextOverflow.visible,
-              style: TextStyle(fontWeight: FontWeight.w400, letterSpacing: 1),
+          SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(top: 8),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${_bloc?.petSelecionado.historia}",
+                textAlign: TextAlign.justify,
+                maxLines: 5,
+                overflow: TextOverflow.visible,
+                style: TextStyle(fontWeight: FontWeight.w400, letterSpacing: 1),
+              ),
             ),
           )
         ],
@@ -269,14 +280,26 @@ class _DetalhePetState extends State<DetalhePet> {
   Widget _botaoEntrarEmContato() {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.all(14),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             primary: Theme.of(context).primaryColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25))),
         onPressed: () {
-          Navigator.of(context).pushNamed(ChatPet.ROUTE, arguments:  _bloc);
+          _bloc?.mensagemSelecionada = 
+          inboxMensagem(
+            id: null,
+            idRemetente: _bloc?.idUsuario,
+            idDestinatario: _bloc?.petSelecionado.idDono,
+            conteudo: null,
+            data: null,
+            nome:  _bloc?.petSelecionado.nome,
+            imagem:  _bloc?.petSelecionado.imagem,
+            localizacao:_bloc?.petSelecionado.localizacao
+          );
+          Navigator.of(context).pushNamed(ChatPet.ROUTE, arguments: _bloc);
         },
         child: Container(
           // width: MediaQuery.of(context).size.width * 0.8,

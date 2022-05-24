@@ -1,11 +1,19 @@
 class Mensagem {
-  int? codigo;
+  String? codigo;
   String? conteudo;
-  int? idRemetente;
-  int? idDestinatario;
+  String? idRemetente;
+  String? idDestinatario;
   String? data;
+  String? autor;
 
-  Mensagem({this.codigo, this.conteudo, this.idRemetente, this.idDestinatario, this.data});
+  Mensagem(
+      {this.codigo,
+      this.conteudo,
+      this.idRemetente,
+      this.idDestinatario,
+      this.data,
+      this.autor
+      });
 
   static Mensagem fromJson(Map<String, dynamic> json) {
     return new Mensagem(
@@ -14,6 +22,7 @@ class Mensagem {
       idRemetente: json['idRemetente'],
       idDestinatario: json['idDestinatario'],
       data: json['data'],
+      autor: json['autor']
     );
   }
 
@@ -23,7 +32,8 @@ class Mensagem {
       "conteudo": this.conteudo,
       "idRemetente": this.idRemetente,
       "idDestinatario": this.idDestinatario,
-      "data": this.data
+      "data": this.data,
+      "autor":this.autor
     };
   }
 }
