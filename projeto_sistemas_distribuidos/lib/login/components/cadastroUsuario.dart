@@ -157,7 +157,9 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     return showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Center(child: Text("E-mail Existente", textAlign: TextAlign.center)),
+          title: Container(
+          color: Color.fromRGBO(96, 80, 136, 1),
+          child: Text("E-mail Existente", textAlign: TextAlign.center)),
           alignment: Alignment.centerRight,
           backgroundColor: Color.fromRGBO(96, 80, 136, 1),
           contentTextStyle: TextStyle(fontSize: 16, color: Colors.black),
@@ -165,14 +167,13 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
           shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20.0) ),
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           content: Text(
-              "Já existe um cadastro com o E-mail inserido, tente novamente mais tarde.", textAlign: TextAlign.center,),
+              "Já existe um cadastro com o E-mail inserido, tente novamente mais tarde.",
+            textAlign: TextAlign.center, style: TextStyle(color: Colors.white)),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             Column(
               children: [
-                Divider(
-                  color: Colors.white,
-                ),
+                Divider(color: Colors.white),
                 TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -194,14 +195,18 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
     return showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Center(child: Text("Cadastrado com Sucesso!", textAlign: TextAlign.center)),
+          backgroundColor: Color.fromRGBO(96, 80, 136, 1),
+          title: Container(
+              color: Color.fromRGBO(96, 80, 136, 1),
+              child: Text("Cadastrado com Sucesso!", textAlign: TextAlign.center)),
           alignment: Alignment.centerRight,
-          contentTextStyle: TextStyle(fontSize: 16, color: Colors.black),
+          contentTextStyle: TextStyle(fontSize: 16, color: Colors.white),
           contentPadding: EdgeInsets.all(10),
           shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20.0) ),
           titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           content: Text(
-            "Usuário cadastrado com Sucesso! \n Agora, basta acessar a tela de login e entrar.", textAlign: TextAlign.center,),
+            "Usuário cadastrado com Sucesso! \n Agora, basta acessar a tela de login e entrar.",
+            textAlign: TextAlign.center,),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
             Column(

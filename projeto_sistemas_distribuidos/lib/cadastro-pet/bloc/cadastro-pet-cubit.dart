@@ -32,9 +32,7 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
   Uint8List imagemPet = Uint8List(0);
   PetRetonoAPI petSelecionado = PetRetonoAPI();
   String imagemPetBase64 = '';
-
-  String idUsuario =
-      'ceaa3009-bd00-46e8-9257-3617c91124d8'; //alterar para pegar quando fizer login
+  String idUsuario = ''; //alterar para pegar quando fizer login
 
   inboxMensagem mensagemSelecionada = inboxMensagem();
 
