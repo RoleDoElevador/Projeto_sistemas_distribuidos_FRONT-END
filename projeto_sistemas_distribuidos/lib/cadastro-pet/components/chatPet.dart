@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/mensagem.dart';
 import 'package:intl/intl.dart';
 
+import 'detalhePet.dart';
+
 class ChatPet extends StatefulWidget {
   const ChatPet({Key? key}) : super(key: key);
   static String ROUTE = "/chatPet";
@@ -67,20 +69,25 @@ class _ChatPetState extends State<ChatPet> {
           ),
           centerTitle: true,
           actions: [
-            Container(
-              padding: EdgeInsets.only(right: 16),
-              child: CircleAvatar(
-                  foregroundColor: Colors.blue,
-                  backgroundColor: Colors.blue,
-                  radius: 30,
-                  child: ClipOval(
-                    child: Image.memory(
-                      _bloc!.mensagemSelecionada.imagem!,
-                      fit: BoxFit.fill,
-                      width: 100,
-                      height: 70,
-                    ),
-                  )),
+            GestureDetector(
+              child: Container(
+                padding: EdgeInsets.only(right: 16),
+                child: CircleAvatar(
+                    foregroundColor: Colors.blue,
+                    backgroundColor: Colors.blue,
+                    radius: 30,
+                    child: ClipOval(
+                      child: Image.memory(
+                        _bloc!.mensagemSelecionada.imagem!,
+                        fit: BoxFit.fill,
+                        width: 100,
+                        height: 70,
+                      ),
+                    )),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, DetalhePet.ROUTE, arguments: _bloc);
+              }
             )
           ],
         ),

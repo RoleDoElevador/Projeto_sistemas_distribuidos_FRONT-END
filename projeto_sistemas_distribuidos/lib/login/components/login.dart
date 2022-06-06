@@ -6,6 +6,7 @@ import 'package:projeto_sistemas_distribuidos/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/login/components/cadastroUsuario.dart';
 import 'package:projeto_sistemas_distribuidos/login/model/user.dart';
+import 'package:projeto_sistemas_distribuidos/utils/loading.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -30,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
     return BlocProvider(
       create: (BuildContext context) {
         _bloc = LoginCubit();
-
         return _bloc!;
       },
       child: Scaffold(body: _buildBody()),
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
         fit: BoxFit.cover,
       )),
       child: Container(
-        height: MediaQuery.of(context).size.height / 1.5,
+        height: MediaQuery.of(context).size.height / 1.6,
         width: MediaQuery.of(context).size.width / 1.2,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -87,12 +87,15 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _validarAcesso() async {
     if (_formKeyUser.currentState!.validate() ||
         _formKeyPassword.currentState!.validate()) {
+      LoadingDialog().showLoading(context);
+
       User usuario =
           new User(email: controladorEmail.text, senha: controladorSenha.text);
       User? usuarioEncontrado = await _bloc?.buscarUsuario(usuario);
 
       if (usuarioEncontrado?.email == controladorEmail.text &&
           usuarioEncontrado?.senha == controladorSenha.text) {
+        LoadingDialog().dismiss(context);
         Navigator.of(context).pushReplacementNamed(HomePage.ROUTE);
       } else {
         return _exibirDialogLoginIncorreto();
@@ -100,46 +103,9 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _exibirDialogLoginIncorreto() {
-    return showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Center(child: Text("Usuário ou senha Incorreta", textAlign: TextAlign.center)),
-          alignment: Alignment.centerRight,
-          contentTextStyle: TextStyle(fontSize: 16, color: Colors.white),
-          backgroundColor: Color.fromRGBO(96, 80, 136, 1),
-          contentPadding: EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20.0) ),
-          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-          content: Text(
-            "O E-mail ou senha inserida está incorreto, tente novamente.", textAlign: TextAlign.center,),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            Column(
-              children: [
-                Divider(
-                  color: Colors.white,
-                ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "Fechar",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )),
-              ],
-            )
-          ],
-        ));
-  }
-
   Widget _retornaBotaoCadastro() {
     return new Container(
-      padding: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.only(top: 22),
       child: GestureDetector(
         onTap: () {
           Navigator.of(context)
@@ -207,25 +173,54 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Future<void> _exibirDialogLoginIncorreto() {
+    return showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Center(child: Text("Usuário ou senha Incorreta", textAlign: TextAlign.center)),
+          alignment: Alignment.centerRight,
+          contentTextStyle: TextStyle(fontSize: 16, color: Colors.white),
+          backgroundColor: Color.fromRGBO(96, 80, 136, 1),
+          contentPadding: EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20.0) ),
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          content: Text(
+            "O E-mail ou senha inserida está incorreto, tente novamente.", textAlign: TextAlign.center,),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            Column(
+              children: [
+                Divider(
+                  color: Colors.white,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Fechar",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    )),
+              ],
+            )
+          ],
+        ));
+  }
+
   Widget _buildHeader() {
     return Column(
       children: [
         new Container(
           child: new Container(
-            padding: const EdgeInsets.only(left: 8),
+            padding: const EdgeInsets.only(bottom: 16),
             child: new Image.asset(
-              "assets/logo.png",
-              scale: 1.5,
+              "assets/logo_roxo.png",
+              scale: 1.8,
             ),
           ),
-        ),
-        new Container(
-          padding: const EdgeInsets.only(bottom: 18),
-          child: Text("ADOPTIONEW",
-              style: TextStyle(
-                  fontSize: 24,
-                  color: const Color.fromRGBO(96, 80, 136, 1),
-                  fontWeight: FontWeight.bold)),
         ),
       ],
     );

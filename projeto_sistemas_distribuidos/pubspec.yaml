@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^2.3.0
   shared_preferences: ^2.0.15
   intl: ^0.17.0
+  flutter_search_bar: ^2.1.0
+  animated_splash_screen: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +69,8 @@ flutter:
     - assets/cachorro.jpg
     - assets/logo.png
     - assets/imagemFundoLogin.png
+    - assets/logo_roxo.png
+    - assets/loading.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
