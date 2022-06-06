@@ -41,7 +41,7 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
   void inicializarListaPets() async {
     service.retonarListaDePets().then(
           (pets) => emit(
-            state.patchState(listaPets: pets),
+            state.patchState(listaPets: pets, listaPetsBarraPesquisa: pets),
           ),
         );
   }

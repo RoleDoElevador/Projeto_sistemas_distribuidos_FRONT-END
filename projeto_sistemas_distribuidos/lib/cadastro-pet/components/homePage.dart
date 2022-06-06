@@ -6,6 +6,7 @@ import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cub
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/cadastro-pet-form.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/detalhePet.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/inbox.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/sobreNos.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet-retornoAPI.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/Pet.dart';
 
@@ -20,12 +21,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   CadastroPetCubit? _bloc;
+  TextEditingController _controladorPesquisa = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return new BlocProvider(
       create: (BuildContext context) {
-        _bloc = CadastroPetCubit();
         _bloc!.inicializarListaPets();
         return _bloc!;
       },
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state) {
           return new Scaffold(
             appBar: new PreferredSize(
-              preferredSize: const Size.fromHeight(50),
+              preferredSize: const Size.fromHeight(80),
               child: _buildAppBar(),
             ),
             drawer: _buildDrawer(),
@@ -64,16 +65,21 @@ class _HomePageState extends State<HomePage> {
         if (state.listaPets!.isNotEmpty) {
           return _buildGridViewPets(state.listaPets);
         } else {
-          return new Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(left: 32, right: 32),
-            width: MediaQuery.of(context).size.width,
-            child: new Text(
-              "Atualmente, não possuimos nenhum animal disponível para adoção.",
-              textAlign: TextAlign.center,
-              style: new TextStyle(
-                  height: 1.5, fontSize: 16, fontWeight: FontWeight.w600),
-            ),
+          return Column(
+            children: [
+              _buildBarraPesquisa(state.listaPets),
+              new Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.only(top: 64, left: 32, right: 32),
+                width: MediaQuery.of(context).size.width,
+                child: new Text(
+                  "Atualmente, não possuimos nenhum animal disponível para adoção.",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      height: 1.5, fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           );
         }
       },
@@ -84,7 +90,7 @@ class _HomePageState extends State<HomePage> {
     return new SingleChildScrollView(
       child: new Column(
         children: [
-          _buildBarraPesquisa(),
+          _buildBarraPesquisa(listaPets),
           new Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 1.2,
@@ -176,27 +182,47 @@ class _HomePageState extends State<HomePage> {
         ));
   }
 
-  Widget _buildBarraPesquisa() {
+  Widget _buildBarraPesquisa(List<PetRetonoAPI>? listaPets) {
     return new Container(
+      alignment: Alignment.center,
       width: MediaQuery.of(context).size.width / 1.2,
-      height: MediaQuery.of(context).size.height / 20,
+      height: 35,
+      margin: EdgeInsets.all(4),
       decoration: new BoxDecoration(
         border: new Border.all(color: Colors.black, width: 1.2),
         borderRadius: new BorderRadius.circular(8),
       ),
-      child: new Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          new Container(
-            padding: const EdgeInsets.only(left: 16),
-            child: new Text('O que está buscando?'),
-          ),
-          new Container(
-              padding: const EdgeInsets.only(right: 16),
-              child: new Icon(Icons.search)),
-        ],
+      child: new TextField(
+        controller: _controladorPesquisa,
+        cursorColor: Colors.transparent,
+        decoration: new InputDecoration(
+          prefixIcon: Icon(Icons.search),
+          hintText: "Pesquise um PET por aqui",
+          contentPadding: EdgeInsets.only(left: 8),
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+        ),
+        onChanged: _buscarPesquisa,
       ),
     );
+  }
+
+  void _buscarPesquisa(String textoDeBusca) {
+    final sugestoes = _bloc?.state.listaPets?.where((pets) {
+      final petsfiltro = pets.raca?.toLowerCase(
+);
+      final input = textoDeBusca.toLowerCase();
+      return petsfiltro!.contains(input);
+    }).toList();
+    setState(() {
+      if (sugestoes!.isNotEmpty){
+        _bloc?.state.listaPets = sugestoes;
+      }
+      else {
+        _bloc?.inicializarListaPets();
+      }
+    });
   }
 
   Widget _buildAppBar() {
@@ -214,12 +240,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       backgroundColor: Colors.white,
-      title: new Text(
-        'OLX DE DOGUINHO',
-        style: new TextStyle(
-          color: const Color.fromRGBO(96, 80, 136, 1),
-        ),
-      ),
+      title: Image.asset("assets/logo_roxo.png",
+      scale: 3),
       centerTitle: true,
       elevation: 0,
       actions: [
@@ -248,16 +270,11 @@ class _HomePageState extends State<HomePage> {
           new DrawerHeader(
             child: new Center(
               child: new Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   new Image.asset(
                     "assets/logo.png",
-                    scale: 1.8,
-                  ),
-                  new Text(
-                    'OLX DE DOGUINHO',
-                    style: new TextStyle(
-                      color: Colors.white,
-                    ),
+                    scale: 2.4,
                   ),
                 ],
               ),
@@ -288,6 +305,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
             ),
             title: new GestureDetector(
+              onTap: () => Navigator.pushNamed(context, SobreNos.ROUTE),
               child: new Text("Sobre Nós",
                   style:
                       new TextStyle(color: Color.fromRGBO(243, 241, 237, 1))),
