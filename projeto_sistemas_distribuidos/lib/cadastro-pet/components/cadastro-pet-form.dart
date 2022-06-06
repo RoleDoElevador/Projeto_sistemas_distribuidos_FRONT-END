@@ -20,7 +20,6 @@ class _CadastroPetState extends State<CadastroPet> {
   TextEditingController controladorHistoriaPet = new TextEditingController();
   TextEditingController controladorPortePet = new TextEditingController();
 
-
   Pet pet = new Pet();
 
   @override
@@ -187,6 +186,7 @@ class _CadastroPetState extends State<CadastroPet> {
                 color: const Color.fromRGBO(228, 226, 222, 1),
               ),
               child: new TextField(
+              
                 maxLines: null,
                 controller: controlador,
                 cursorColor: Colors.transparent,
