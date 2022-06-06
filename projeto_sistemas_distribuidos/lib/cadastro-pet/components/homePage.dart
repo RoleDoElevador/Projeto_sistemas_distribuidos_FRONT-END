@@ -23,11 +23,14 @@ class _HomePageState extends State<HomePage> {
   CadastroPetCubit? _bloc;
   TextEditingController _controladorPesquisa = new TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
+    _bloc?.idUsuario = ModalRoute.of(context)?.settings.arguments as String;
     return new BlocProvider(
       create: (BuildContext context) {
-        _bloc!.inicializarListaPets();
+        _bloc = new CadastroPetCubit();
+        _bloc?.inicializarListaPets();
         return _bloc!;
       },
       child: new BlocBuilder<CadastroPetCubit, CadastroPetModel>(
@@ -45,7 +48,6 @@ class _HomePageState extends State<HomePage> {
               child: new FloatingActionButton(
                 backgroundColor: Color.fromRGBO(96, 80, 136, 1),
                 onPressed: () {
-                  
                   Navigator.of(context)
                       .pushNamed(CadastroPet.ROUTE, arguments: _bloc);
                 },
@@ -209,18 +211,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _buscarPesquisa(String textoDeBusca) {
+    List<PetRetonoAPI>? petsBuscados = _bloc?.state.listaPets;
+
     final sugestoes = _bloc?.state.listaPets?.where((pets) {
-      final petsfiltro = pets.raca?.toLowerCase(
-);
+      final petsfiltro = pets.raca?.toLowerCase();
       final input = textoDeBusca.toLowerCase();
       return petsfiltro!.contains(input);
     }).toList();
+
     setState(() {
       if (sugestoes!.isNotEmpty){
         _bloc?.state.listaPets = sugestoes;
       }
       else {
-        _bloc?.inicializarListaPets();
+        _bloc?.state.listaPets = _bloc?.state.listaPetsBarraPesquisa;
       }
     });
   }
