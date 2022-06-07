@@ -113,7 +113,7 @@ class Service {
     }
   }
 
-   Future<List<Mensagem>?> listaMensagensTrocadas(String idUsuario, String idPet  ) async {
+   Future<List<Mensagem>?>? listaMensagensTrocadas(String idUsuario, String idPet  ) async {
     var _url = "${url}pets/mensagens/inbox/mensagens/$idUsuario/$idPet";
     List<Mensagem>? listaMensagens;
 

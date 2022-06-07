@@ -20,7 +20,7 @@ class _InboxState extends State<Inbox> {
   @override
   Widget build(BuildContext context) {
     _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
-    _bloc?.buscarMensagensInbox('ceaa3009-bd00-46e8-9257-3617c91124d8');
+    _bloc?.buscarMensagensInbox(_bloc!.idUsuario);
     //ceaa3009-bd00-46e8-9257-3617c91124d8
 
     return new BlocProvider.value(
