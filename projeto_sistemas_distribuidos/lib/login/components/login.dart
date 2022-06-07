@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
         fit: BoxFit.cover,
       )),
       child: Container(
-        height: MediaQuery.of(context).size.height / 1.6,
+        height: MediaQuery.of(context).size.height / 1.7,
         width: MediaQuery.of(context).size.width / 1.2,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -95,9 +95,12 @@ class _LoginPageState extends State<LoginPage> {
 
       if (usuarioEncontrado?.email == controladorEmail.text &&
           usuarioEncontrado?.senha == controladorSenha.text) {
+
         LoadingDialog().dismiss(context);
-        Navigator.of(context).pushReplacementNamed(HomePage.ROUTE);
+        Navigator.of(context).pushReplacementNamed(
+            HomePage.ROUTE, arguments: usuarioEncontrado?.id);
       } else {
+        LoadingDialog().dismiss(context);
         return _exibirDialogLoginIncorreto();
       }
     }

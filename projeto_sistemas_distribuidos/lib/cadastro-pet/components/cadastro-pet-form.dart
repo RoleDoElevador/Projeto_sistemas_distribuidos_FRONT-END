@@ -93,7 +93,7 @@ class _CadastroPetState extends State<CadastroPet> {
                   pet.historia = controladorHistoriaPet.text;
                   pet.porte = controladorPortePet.text;
                   pet.imagem = _bloc!.imagemPetBase64;
-                  pet.idDono = "1";
+                  pet.idDono = _bloc!.idUsuario;
 
                   _bloc!.cadastrarPet(context, pet);
                   _bloc!.inicializarListaPets();

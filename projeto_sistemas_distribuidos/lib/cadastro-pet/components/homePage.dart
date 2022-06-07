@@ -23,8 +23,10 @@ class _HomePageState extends State<HomePage> {
   CadastroPetCubit? _bloc;
   TextEditingController _controladorPesquisa = new TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
+    _bloc?.idUsuario = ModalRoute.of(context)?.settings.arguments as String;
     return new BlocProvider(
       create: (BuildContext context) {
         _bloc = new CadastroPetCubit();
@@ -212,16 +214,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _buscarPesquisa(String textoDeBusca) {
+    List<PetRetonoAPI>? petsBuscados = _bloc?.state.listaPets;
+
     final sugestoes = _bloc?.state.listaPets?.where((pets) {
       final petsfiltro = pets.raca?.toLowerCase();
       final input = textoDeBusca.toLowerCase();
       return petsfiltro!.contains(input);
     }).toList();
+
     setState(() {
       if (sugestoes!.isNotEmpty) {
         _bloc?.state.listaPets = sugestoes;
-      } else {
-        _bloc?.inicializarListaPets();
+      }
+      else {
+        _bloc?.state.listaPets = _bloc?.state.listaPetsBarraPesquisa;
       }
     });
   }
