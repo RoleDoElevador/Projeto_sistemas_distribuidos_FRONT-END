@@ -75,8 +75,7 @@ class _InboxState extends State<Inbox> {
                                 id: null,
                                 idDestinatario: state
                                     .listaMensagensInbox![index].idRemetente,
-                                idRemetente: state
-                                    .listaMensagensInbox![index].idDestinatario,
+                                idRemetente: _bloc?.idUsuario,
                                 nome: state.listaMensagensInbox![index].nome,
                                 conteudo: null,
                                 data: null,
