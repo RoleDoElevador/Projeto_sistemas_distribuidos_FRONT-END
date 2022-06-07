@@ -5,6 +5,7 @@ import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cub
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/bloc/cadastro-pet-cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/cadastro-pet/components/chatPet.dart';
+import 'package:projeto_sistemas_distribuidos/cadastro-pet/models/inbox-mensagem.dart';
 
 class Inbox extends StatefulWidget {
   const Inbox({Key? key}) : super(key: key);
@@ -70,8 +71,22 @@ class _InboxState extends State<Inbox> {
                         children: [
                           new ListTile(
                             onTap: () {
-                              _bloc?.mensagemSelecionada =
-                                  state.listaMensagensInbox![index];
+                              _bloc?.mensagemSelecionada = new inboxMensagem(
+                                id: null,
+                                idDestinatario: state
+                                    .listaMensagensInbox![index].idRemetente,
+                                idRemetente: state
+                                    .listaMensagensInbox![index].idDestinatario,
+                                nome: state.listaMensagensInbox![index].nome,
+                                conteudo: null,
+                                data: null,
+                              );
+                              print(
+                                  "id destinatario: ${_bloc?.mensagemSelecionada.idRemetente}");
+                              print(
+                                  "id remetente: ${_bloc?.mensagemSelecionada.idDestinatario}");
+                              print(_bloc?.mensagemSelecionada.idDestinatario == _bloc?.idUsuario);
+
                               Navigator.of(context)
                                   .pushNamed(ChatPet.ROUTE, arguments: _bloc);
                             },
@@ -81,7 +96,7 @@ class _InboxState extends State<Inbox> {
                                 radius: 25,
                                 child: ClipOval(
                                   child: Image.asset(
-                                   'assets/avatar.png',
+                                    'assets/avatar.png',
                                     fit: BoxFit.cover,
                                     width: 70,
                                     height: 70,

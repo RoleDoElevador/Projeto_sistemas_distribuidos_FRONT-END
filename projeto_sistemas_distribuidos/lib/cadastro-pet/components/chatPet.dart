@@ -25,7 +25,7 @@ class _ChatPetState extends State<ChatPet> {
     _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
 
     _bloc?.buscarMensagens(
-        _bloc!.idUsuario, _bloc!.mensagemSelecionada.idRemetente!);
+        _bloc!.idUsuario, _bloc!.mensagemSelecionada.idDestinatario!);
 
     return BlocProvider.value(
       value: _bloc!,

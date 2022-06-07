@@ -74,9 +74,9 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
   }
 
   Future<List<Mensagem>?> buscarMensagens(
-      String idUsuario, String idPet) async {
+      String idUsuario, String idRemetente) async {
     List<Mensagem>? _listaMensagens =
-        await service.listaMensagensTrocadas(idUsuario, idPet);
+        await service.listaMensagensTrocadas(idUsuario, idRemetente);
 
     emit(state.patchState(listaMensagensTrocadas: _listaMensagens));
     return _listaMensagens;
@@ -102,7 +102,7 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
             data: DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()),
             conteudo: conteudo,
             idRemetente: idUsuario,
-            idDestinatario: mensagemSelecionada.idRemetente,
+            idDestinatario: mensagemSelecionada.idDestinatario,
             autor: autor),
       );
       List<Mensagem>? _listaMensagensAtualizada =
