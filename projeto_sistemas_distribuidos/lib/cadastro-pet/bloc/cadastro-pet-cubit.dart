@@ -102,11 +102,11 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
             data: DateFormat('yyyy-MM-dd hh:mm:ss').format(DateTime.now()),
             conteudo: conteudo,
             idRemetente: idUsuario,
-            idDestinatario: mensagemSelecionada.idDestinatario,
+            idDestinatario: mensagemSelecionada.idRemetente,
             autor: autor),
       );
       List<Mensagem>? _listaMensagensAtualizada =
-          await buscarMensagens(idUsuario, mensagemSelecionada.idDestinatario!);
+          await buscarMensagens(idUsuario, mensagemSelecionada.idRemetente!);
 
       _listaMensagensAtualizada!.reversed;
 

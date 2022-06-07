@@ -10,8 +10,7 @@ class inboxMensagem {
   String? conteudo;
   String? data;
   String? nome;
-  Uint8List? imagem;
-  String? localizacao;
+
 
   inboxMensagem(
       {this.id,
@@ -20,8 +19,7 @@ class inboxMensagem {
       this.conteudo,
       this.data,
       this.nome,
-      this.imagem,
-      this.localizacao
+    
       });
 
   static inboxMensagem fromJson(Map<String, dynamic> json) {
@@ -32,8 +30,6 @@ class inboxMensagem {
         conteudo: json['conteudo'],
         data: json['data'],
         nome: json['nome'],
-        imagem: base64.decode(json['imagem']),
-        localizacao: json['localizacao']
         
         );
   }
@@ -46,8 +42,6 @@ class inboxMensagem {
       'conteudo': this.conteudo,
       'data': this.data,
       'nome': this.nome,
-      'imagem': this.imagem,
-      'localizacao':this.localizacao
     };
   }
 }

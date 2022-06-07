@@ -25,7 +25,7 @@ class _ChatPetState extends State<ChatPet> {
     _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
 
     _bloc?.buscarMensagens(
-        _bloc!.idUsuario, _bloc!.mensagemSelecionada.idDestinatario!);
+        _bloc!.idUsuario, _bloc!.mensagemSelecionada.idRemetente!);
 
     return BlocProvider.value(
       value: _bloc!,
@@ -61,8 +61,7 @@ class _ChatPetState extends State<ChatPet> {
                 '${_bloc!.mensagemSelecionada.nome}',
                 style: TextStyle(color: Colors.black),
               ),
-              Text('${_bloc!.mensagemSelecionada.localizacao}',
-                  style: TextStyle(color: Colors.grey))
+             
             ],
           ),
           centerTitle: true,
@@ -72,15 +71,15 @@ class _ChatPetState extends State<ChatPet> {
                   padding: EdgeInsets.only(right: 16),
                   child: CircleAvatar(
                       foregroundColor: Colors.blue,
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Colors.white,
                       radius: 30,
                       child: ClipOval(
-                        child: Image.memory(
-                          _bloc!.mensagemSelecionada.imagem!,
-                          fit: BoxFit.fill,
-                          width: 100,
-                          height: 70,
-                        ),
+                        child: Image.asset(
+                                   'assets/avatar.png',
+                                    fit: BoxFit.cover,
+                                    width: 70,
+                                    height: 70,
+                                  )
                       )),
                 ),
                 onTap: () {

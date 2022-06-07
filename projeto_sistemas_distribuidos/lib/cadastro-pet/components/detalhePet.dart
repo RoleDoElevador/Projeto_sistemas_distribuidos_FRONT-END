@@ -296,8 +296,7 @@ class _DetalhePetState extends State<DetalhePet> {
             conteudo: null,
             data: null,
             nome:  _bloc?.petSelecionado.nome,
-            imagem:  _bloc?.petSelecionado.imagem,
-            localizacao:_bloc?.petSelecionado.localizacao
+         
           );
           Navigator.of(context).pushNamed(ChatPet.ROUTE, arguments: _bloc);
         },

@@ -80,8 +80,8 @@ class _InboxState extends State<Inbox> {
                                 backgroundColor: Colors.white,
                                 radius: 25,
                                 child: ClipOval(
-                                  child: Image.memory(
-                                    state.listaMensagensInbox![index].imagem ?? Uint8List(1),
+                                  child: Image.asset(
+                                   'assets/avatar.png',
                                     fit: BoxFit.cover,
                                     width: 70,
                                     height: 70,
