@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_sistemas_distribuidos/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_sistemas_distribuidos/login/model/user.dart';
+import 'package:projeto_sistemas_distribuidos/utils/loading.dart';
 
 
 class CadastroUsuario extends StatefulWidget {
@@ -42,28 +43,21 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
           )),
       child: SingleChildScrollView(
         child: Container(
+          padding: EdgeInsets.only(top: 32),
           alignment: Alignment.center,
-          height: MediaQuery.of(context).size.height / 1.3,
-          width: MediaQuery.of(context).size.width / 1.2,
+          height: MediaQuery.of(context).size.height / 1.6,
+          width: MediaQuery.of(context).size.width / 1.3,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),
           ),
           child: new Column(children: [
             new Container(
-              child: new Container(
-                padding: const EdgeInsets.only(left: 8),
-                child: new Image.asset(
-                  "assets/logo.png",
-                  scale: 1.5,
-                ),
+              padding: EdgeInsets.only(bottom: 8),
+              child: new Image.asset(
+                "assets/logo_roxo.png",
+                scale: 1.8,
               ),
-            ),
-            new Container(
-              padding: const EdgeInsets.only(bottom: 18),
-              child: Text("OLX DE DOGUINHOS", style: TextStyle(fontSize: 24,
-                  color: const Color.fromRGBO(96, 80, 136, 1),
-                  fontWeight: FontWeight.bold)),
             ),
             _retornarCampoForms(_formKeyUser ,"NOME", controladorNome, false),
             _retornarCampoForms(_formKeyEmail, "EMAIL", controladorEmail, false),
@@ -94,11 +88,13 @@ class _CadastroUsuarioState extends State<CadastroUsuario> {
   Future<void> _validarCadastro() async {
     if (_formKeyUser.currentState!.validate() ||
         _formKeyPassword.currentState!.validate() || _formKeyEmail.currentState!.validate()) {
+      LoadingDialog().showLoading(context);
 
       final User user = new User(nome: controladorNome.text, email: controladorEmail.text, senha: controladorSenha.text);
 
       final User? usuariocadastrado = await _bloc?.cadastrarUsuario(user);
 
+      LoadingDialog().dismiss(context);
       if (usuariocadastrado != null){
         _exibirDialogSucesso();
       } else {

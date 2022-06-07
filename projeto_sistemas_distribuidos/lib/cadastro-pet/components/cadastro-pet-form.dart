@@ -62,13 +62,7 @@ class _CadastroPetState extends State<CadastroPet> {
           children: [
             new Container(
               padding: const EdgeInsets.only(bottom: 24),
-              child: new Container(
-                padding: const EdgeInsets.only(left: 8),
-                child: new Image.asset(
-                  "assets/logo.png",
-                  scale: 1.5,
-                ),
-              ),
+
             ),
             _retornaCampoForms("NOME", controladorNomePet, TextInputType.text),
             Row(
