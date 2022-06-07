@@ -291,13 +291,12 @@ class _DetalhePetState extends State<DetalhePet> {
           _bloc?.mensagemSelecionada = 
           inboxMensagem(
             id: null,
-            idRemetente: _bloc?.idUsuario,
+            idRemetente:_bloc?.idUsuario,
             idDestinatario: _bloc?.petSelecionado.idDono,
             conteudo: null,
             data: null,
             nome:  _bloc?.petSelecionado.nome,
-            imagem:  _bloc?.petSelecionado.imagem,
-            localizacao:_bloc?.petSelecionado.localizacao
+         
           );
           Navigator.of(context).pushNamed(ChatPet.ROUTE, arguments: _bloc);
         },

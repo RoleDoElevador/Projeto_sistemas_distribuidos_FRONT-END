@@ -56,7 +56,8 @@ class _LoginPageState extends State<LoginPage> {
             new Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           _buildHeader(),
           _retornarCampoForms("EMAIL", controladorEmail, _formKeyUser, false),
-          _retornarCampoForms("SENHA", controladorSenha, _formKeyPassword, true),
+          _retornarCampoForms(
+              "SENHA", controladorSenha, _formKeyPassword, true),
           _retornaBotaoEntrar(),
           _retornaBotaoCadastro(),
         ]),
@@ -95,10 +96,10 @@ class _LoginPageState extends State<LoginPage> {
 
       if (usuarioEncontrado?.email == controladorEmail.text &&
           usuarioEncontrado?.senha == controladorSenha.text) {
-
         LoadingDialog().dismiss(context);
-        Navigator.of(context).pushReplacementNamed(
-            HomePage.ROUTE, arguments: usuarioEncontrado?.id);
+        Navigator.of(context).pushReplacementNamed(HomePage.ROUTE,
+            arguments: usuarioEncontrado?.id);
+        print(usuarioEncontrado?.id);
       } else {
         LoadingDialog().dismiss(context);
         return _exibirDialogLoginIncorreto();
@@ -124,8 +125,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _retornarCampoForms(
-      String nomeCampo, TextEditingController controlador, Key key, bool obscureText) {
+  Widget _retornarCampoForms(String nomeCampo,
+      TextEditingController controlador, Key key, bool obscureText) {
     return Form(
       key: key,
       child: new Container(
@@ -153,7 +154,8 @@ class _LoginPageState extends State<LoginPage> {
               child: new TextFormField(
                 controller: controlador,
                 obscureText: obscureText,
-                maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
+                maxLengthEnforcement:
+                    MaxLengthEnforcement.truncateAfterCompositionEnds,
                 maxLength: 100,
                 cursorColor: Colors.transparent,
                 decoration: new InputDecoration(
@@ -180,37 +182,45 @@ class _LoginPageState extends State<LoginPage> {
     return showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Center(child: Text("Usuário ou senha Incorreta", textAlign: TextAlign.center)),
-          alignment: Alignment.centerRight,
-          contentTextStyle: TextStyle(fontSize: 16, color: Colors.white),
-          backgroundColor: Color.fromRGBO(96, 80, 136, 1),
-          contentPadding: EdgeInsets.all(10),
-          shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20.0) ),
-          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-          content: Text(
-            "O E-mail ou senha inserida está incorreto, tente novamente.", textAlign: TextAlign.center,),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            Column(
-              children: [
-                Divider(
+              title: Center(
+                  child: Text("Usuário ou senha Incorreta",
+                      textAlign: TextAlign.center)),
+              alignment: Alignment.centerRight,
+              contentTextStyle: TextStyle(fontSize: 16, color: Colors.white),
+              backgroundColor: Color.fromRGBO(96, 80, 136, 1),
+              contentPadding: EdgeInsets.all(10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              titleTextStyle: TextStyle(
                   color: Colors.white,
-                ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "Fechar",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    )),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              content: Text(
+                "O E-mail ou senha inserida está incorreto, tente novamente.",
+                textAlign: TextAlign.center,
+              ),
+              actionsAlignment: MainAxisAlignment.center,
+              actions: [
+                Column(
+                  children: [
+                    Divider(
+                      color: Colors.white,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Fechar",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        )),
+                  ],
+                )
               ],
-            )
-          ],
-        ));
+            ));
   }
 
   Widget _buildHeader() {

@@ -23,11 +23,9 @@ class _ChatPetState extends State<ChatPet> {
   @override
   Widget build(BuildContext context) {
     _bloc = ModalRoute.of(context)?.settings.arguments as CadastroPetCubit;
-    if (!buscouLista) {
-      _bloc?.buscarMensagens(
-          _bloc!.idUsuario, _bloc!.mensagemSelecionada.idDestinatario!);
-      buscouLista = true;
-    }
+
+    _bloc?.buscarMensagens(
+        _bloc!.idUsuario, _bloc!.mensagemSelecionada.idDestinatario!);
 
     return BlocProvider.value(
       value: _bloc!,
@@ -63,32 +61,31 @@ class _ChatPetState extends State<ChatPet> {
                 '${_bloc!.mensagemSelecionada.nome}',
                 style: TextStyle(color: Colors.black),
               ),
-              Text('${_bloc!.mensagemSelecionada.localizacao}',
-                  style: TextStyle(color: Colors.grey))
+             
             ],
           ),
           centerTitle: true,
           actions: [
             GestureDetector(
-              child: Container(
-                padding: EdgeInsets.only(right: 16),
-                child: CircleAvatar(
-                    foregroundColor: Colors.blue,
-                    backgroundColor: Colors.blue,
-                    radius: 30,
-                    child: ClipOval(
-                      child: Image.memory(
-                        _bloc!.mensagemSelecionada.imagem!,
-                        fit: BoxFit.fill,
-                        width: 100,
-                        height: 70,
-                      ),
-                    )),
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, DetalhePet.ROUTE, arguments: _bloc);
-              }
-            )
+                child: Container(
+                  padding: EdgeInsets.only(right: 16),
+                  child: CircleAvatar(
+                      foregroundColor: Colors.blue,
+                      backgroundColor: Colors.white,
+                      radius: 30,
+                      child: ClipOval(
+                        child: Image.asset(
+                                   'assets/avatar.png',
+                                    fit: BoxFit.cover,
+                                    width: 70,
+                                    height: 70,
+                                  )
+                      )),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, DetalhePet.ROUTE,
+                      arguments: _bloc);
+                })
           ],
         ),
       ),
@@ -107,7 +104,7 @@ class _ChatPetState extends State<ChatPet> {
                       EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                     // reverse: true,
+                      // reverse: true,
                       itemCount: state.listaMensagensTrocadas?.length == null
                           ? 0
                           : state.listaMensagensTrocadas?.length,
@@ -127,9 +124,9 @@ class _ChatPetState extends State<ChatPet> {
                                   decoration: BoxDecoration(
                                     color: state.listaMensagensTrocadas?[index]
                                                 .idRemetente ==
-                                            _bloc?.idUsuario?
-                                        Theme.of(context).primaryColor:
-                                       Colors.grey[600],
+                                            _bloc?.idUsuario
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.grey[600],
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   alignment: Alignment.centerLeft,

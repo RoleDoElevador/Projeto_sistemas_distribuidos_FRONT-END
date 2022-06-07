@@ -74,9 +74,9 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
   }
 
   Future<List<Mensagem>?> buscarMensagens(
-      String idUsuario, String idPet) async {
+      String idUsuario, String idRemetente) async {
     List<Mensagem>? _listaMensagens =
-        await service.listaMensagensTrocadas(idUsuario, idPet);
+        await service.listaMensagensTrocadas(idUsuario, idRemetente);
 
     emit(state.patchState(listaMensagensTrocadas: _listaMensagens));
     return _listaMensagens;
@@ -106,7 +106,7 @@ class CadastroPetCubit extends Cubit<CadastroPetModel>
             autor: autor),
       );
       List<Mensagem>? _listaMensagensAtualizada =
-          await buscarMensagens(idUsuario, mensagemSelecionada.idDestinatario!);
+          await buscarMensagens(idUsuario, mensagemSelecionada.idRemetente!);
 
       _listaMensagensAtualizada!.reversed;
 
